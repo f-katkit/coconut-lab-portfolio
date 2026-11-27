@@ -122,7 +122,11 @@
   .hero .facts li { white-space: nowrap; }
   .hero .facts li::before { content: ""; display: inline-block; width: 8px; height: 8px; background: var(--ok); border-radius: 50%; margin-right: 8px; vertical-align: 2px; }
 
-  .device { background: #fff; border: 1px solid var(--line); border-radius: var(--r-card); box-shadow: 0 18px 40px -22px rgba(31,63,102,.45); padding: 18px; max-width: 460px; justify-self: end; width: 100%; }
+  /* 写真の左下にモックアップを重ねる */
+  .visual { display: grid; justify-self: end; width: 100%; max-width: 540px; }
+  .visual .photo { display: block; justify-self: end; width: 86%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-card); background: var(--tint); }
+  .visual .device { position: relative; justify-self: start; width: 88%; margin-top: -120px; }
+  .device { background: #fff; border: 1px solid var(--line); border-radius: var(--r-card); box-shadow: 0 18px 40px -22px rgba(31,63,102,.45); padding: 18px; max-width: 460px; }
   [data-theme="cafe"] .device { box-shadow: 0 18px 40px -24px rgba(47,70,54,.5); transform: rotate(-1.2deg); }
   [data-theme="kids"] .device { box-shadow: 8px 8px 0 #cfe5fb; border: 2px solid #22314a; }
   .device .top { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: 10px; gap: 10px; }
@@ -237,7 +241,8 @@
   @media (max-width: 900px) {
     nav.g a:not(.btn) { display: none; }
     .hero .wrap, .info, .contact .wrap { grid-template-columns: 1fr; }
-    .device { justify-self: start; }
+    .visual { justify-self: start; }
+    .visual .photo { aspect-ratio: 16 / 9; }
     .issues { grid-template-columns: 1fr; }
     .issues div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
     [data-theme="kids"] .issues div + div { padding-left: 22px; border-top: 0; }
@@ -248,6 +253,8 @@
     .wrap { padding: 0 20px; }
     .steps { grid-template-columns: 1fr; }
     .hero .facts { flex-direction: column; gap: 4px; }
+    .visual .photo { width: 100%; }
+    .visual .device { width: 94%; margin-top: -48px; }
   }
 </style>
 </head>
@@ -276,7 +283,10 @@
         <div class="ctas" id="ctas"></div>
         <ul class="facts" id="facts"></ul>
       </div>
-      <div class="device" id="device" role="img"></div>
+      <div class="visual">
+        <img class="photo" id="photo" src="img/b2b.webp" alt="" width="1200" height="800" decoding="async">
+        <div class="device" id="device" role="img"></div>
+      </div>
     </div>
   </div>
 
@@ -332,7 +342,7 @@
 <footer>
   <div class="wrap">
     <span id="foot-name"></span>
-    <span>制作サンプル：<a href="../../index.html">Kat のポートフォリオ</a></span>
+    <span>写真：<a href="https://www.pakutaso.com/">ぱくたそ</a> ／ 制作サンプル：<a href="../../index.html">Kat のポートフォリオ</a></span>
   </div>
 </footer>
 
@@ -583,6 +593,8 @@
     $("lead").textContent = P.lead;
     $("ctas").innerHTML = P.ctas.map(([h, t, c]) => '<a class="btn ' + c + '" href="' + h + '">' + esc(t) + "</a>").join("");
     $("facts").innerHTML = P.facts.map((t) => "<li>" + esc(t) + "</li>").join("");
+
+    $("photo").src = "img/" + key + ".webp";
 
     const D = P.device;
     $("device").setAttribute("aria-label", D.aria);
