@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>データが、知らせになるまで（制作サンプル）</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep: #0e2730; --deep-2: #12323d; --mist: #e6eeea; --dim: #8aa5ad;
+    --sky: #7fd3e6; --amber: #ffc94a;
+    --display: "Dela Gothic One", "Hiragino Sans", sans-serif;
+    --body: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--deep); }
+  body { margin: 0; color: var(--mist); font-family: var(--body); font-weight: 500; font-size: 17px; line-height: 1.9; background: var(--deep); }
+  a { color: var(--mist); }
+  :focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
+
+  #stage { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+  .grain { position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(ellipse at 70% 30%, rgba(127,211,230,.08), transparent 60%), radial-gradient(ellipse at 20% 90%, rgba(255,201,74,.06), transparent 55%); }
+
+  .bar { position: fixed; top: 0; left: 0; right: 0; z-index: 3; display: flex; justify-content: space-between; padding: 16px 24px; font-size: 13.5px; color: var(--dim); }
+  .bar a { color: var(--dim); }
+
+  .rail { position: fixed; right: 26px; top: 50%; transform: translateY(-50%); z-index: 3; list-style: none; margin: 0; padding: 0; }
+  .rail li { display: flex; align-items: center; justify-content: flex-end; gap: 10px; font-size: 13px; color: var(--dim); height: 34px; transition: color .3s; }
+  .rail li i { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--dim); transition: background .3s, border-color .3s, transform .3s; }
+  .rail li.on { color: var(--mist); }
+  .rail li.on i { background: var(--amber); border-color: var(--amber); transform: scale(1.3); }
+
+  main { position: relative; z-index: 2; }
+  .intro { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 8vw; }
+  h1 { font-family: var(--display); font-weight: 400; font-size: clamp(40px, 8.4vw, 116px); line-height: 1.12; margin: 0; letter-spacing: -.01em; }
+  h1 span { display: block; }
+  h1 span + span { color: var(--amber); }
+  .intro p { max-width: 30em; color: var(--dim); margin: 28px 0 0; }
+  .scroll-hint { margin-top: 48px; font-size: 14px; color: var(--dim); display: flex; align-items: center; gap: 10px; }
+  .scroll-hint::after { content: ""; width: 1px; height: 46px; background: linear-gradient(var(--dim), transparent); }
+
+  .step { min-height: 100vh; display: flex; align-items: center; padding: 0 8vw; }
+  .card { max-width: 25em; background: rgba(14,39,48,.72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 28px 30px; border-left: 3px solid var(--sky); }
+  .step[data-k="2"] .card, .step[data-k="3"] .card { border-left-color: var(--amber); }
+  .card .no { font-family: var(--display); font-size: 15px; color: var(--sky); }
+  .step[data-k="2"] .card .no, .step[data-k="3"] .card .no { color: var(--amber); }
+  .card h2 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 4vw, 46px); line-height: 1.25; margin: 6px 0 14px; }
+  .card p { margin: 0; color: #c9d8d4; }
+  .card ul { margin: 14px 0 0; padding-left: 1.1em; color: var(--dim); font-size: 15px; }
+
+  .outro { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; padding: 0 8vw 10vh; }
+  .outro h2 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 5vw, 64px); line-height: 1.25; margin: 0 0 22px; }
+  .outro p { max-width: 32em; color: #c9d8d4; margin: 0 0 30px; }
+  .outro a.go { align-self: flex-start; font-weight: 700; text-decoration: none; color: var(--deep); background: var(--amber); padding: 14px 22px; border-radius: 3px; }
+  .outro small { color: var(--dim); margin-top: 26px; font-size: 13px; }
+
+  @media (max-width: 760px) {
+    .rail { display: none; }
+    .card { padding: 22px 20px; }
+    .step { align-items: flex-end; padding-bottom: 8vh; }
+  }
+</style>
+</head>
+<body>
+<canvas id="stage" aria-hidden="true"></canvas>
+<div class="grain"></div>
+<div class="bar"><span>制作サンプル</span><a href="../../index.html">ポートフォリオに戻る</a></div>
+<ol class="rail" id="rail" aria-hidden="true">
+  <li><span>集める</span><i></i></li>
+  <li><span>整える</span><i></i></li>
+  <li><span>見分ける</span><i></i></li>
+  <li><span>知らせる</span><i></i></li>
+</ol>
+
+<main>
+  <section class="intro">
+    <h1><span>データが、</span><span>知らせになる</span><span>まで。</span></h1>
+    <p>毎日あちこちに散らばって生まれるデータは、そのままでは誰の役にも立ちません。集めて、整えて、いつもと違うものだけを見分けて、必要な人に届ける。その流れを、スクロールで追いかけてみてください。</p>
+    <div class="scroll-hint">下へスクロール</div>
+  </section>
+
+  <section class="step" data-k="0">
+    <div class="card"><div class="no">1</div><h2>集める</h2>
+      <p>Webサイト、スプレッドシート、外部のAPI、メール、サーバーのログ。形も届く時刻もばらばらなデータを、決まった時刻に取りに行きます。</p>
+      <ul><li>取得先の利用規約と頻度を守る</li><li>失敗したら時間をおいて再試行する</li></ul></div>
+  </section>
+  <section class="step" data-k="1">
+    <div class="card"><div class="no">2</div><h2>整える</h2>
+      <p>項目名、単位、日付の書き方をそろえて、同じ表に並べます。元のデータはそのまま残すので、あとから何度でも作り直せます。</p></div>
+  </section>
+  <section class="step" data-k="2">
+    <div class="card"><div class="no">3</div><h2>見分ける</h2>
+      <p>過去のデータから「いつもの範囲」を決め、そこから外れたものだけを取り出します。ほとんどのデータは、何も起きていないことを確かめるためにあります。</p></div>
+  </section>
+  <section class="step" data-k="3">
+    <div class="card"><div class="no">4</div><h2>知らせる</h2>
+      <p>見分けた結果だけを、Slack・LINE・メールで担当者に届けます。全部を見なくても、見るべきものに気づけるようになります。</p></div>
+  </section>
+
+  <section class="outro">
+    <h2>この流れを、あなたの業務に合わせて作ります。</h2>
+    <p>このページの粒子は、ブラウザの中で動かしている演出です。実際の仕組みでは、ここで描いた4つの段階を、ご依頼の業務のデータと手順に合わせて組み立てます。</p>
+    <a class="go" href="../../index.html">ポートフォリオを見る</a>
+    <small>このページは制作サンプルです。</small>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  const cv = document.getElementById("stage");
+  const ctx = cv.getContext("2d");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const rail = document.querySelectorAll("#rail li");
+  const steps = [...document.querySelectorAll(".step")];
+  const SKY = [127, 211, 230], AMBER = [255, 201, 74], DIM = [92, 124, 134];
+  const SOURCES = ["Webサイト", "スプレッドシート", "API", "メール", "サーバーのログ"];
+
+  let W = 0, H = 0, dpr = 1, parts = [], targets = [], mobile = false;
+
+  function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+  function layout() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    mobile = W < 760;
+    const r = rng(7);
+    const cols = mobile ? 14 : 20, rows = mobile ? 11 : 12, n = cols * rows;
+    // 描画領域（文字のカードと重ならないよう、デスクトップでは右寄せ）
+    const ax = mobile ? W * 0.08 : W * 0.52, aw = mobile ? W * 0.84 : W * 0.38;
+    const ay = mobile ? H * 0.12 : H * 0.18, ah = mobile ? H * 0.42 : H * 0.62;
+    const src = SOURCES.map((_, i) => ({ x: ax + aw * (0.08 + 0.18 * i + (i % 2) * 0.04), y: ay + ah * (0.15 + ((i * 37) % 5) / 5 * 0.75) }));
+    const bell = { x: ax + aw * 0.82, y: ay + ah * 0.5 };
+    const gap = Math.min(aw / cols, ah / rows);
+    const gx = ax + (aw - gap * (cols - 1)) / 2, gy = ay + (ah - gap * (rows - 1)) / 2;
+    parts = []; targets = [[], [], [], []];
+    let anomalyCount = 0;
+    for (let i = 0; i < n; i++) {
+      const anomaly = r() < 0.07;
+      if (anomaly) anomalyCount++;
+      const s = src[i % src.length];
+      const ang = r() * Math.PI * 2, rad = Math.sqrt(r()) * gap * 2.8;
+      const c = i % cols, ro = Math.floor(i / cols);
+      const gridP = { x: gx + c * gap, y: gy + ro * gap };
+      targets[0].push({ x: s.x + Math.cos(ang) * rad, y: s.y + Math.sin(ang) * rad });
+      targets[1].push(gridP);
+      targets[2].push(anomaly ? { x: gridP.x + (r() - .5) * gap * .6, y: gridP.y - gap * (1.6 + r() * 1.2) } : gridP);
+      // 通知: 正常は左下に記録として積まれ、異常はベルの周りに集まる
+      const lc = mobile ? 20 : 24, ls = gap * 0.42;
+      const logRows = Math.ceil(n / lc);
+      const logP = { x: ax + (i % lc) * ls, y: ay + ah - (logRows - 1 - Math.floor(i / lc)) * ls };
+      parts.push({ anomaly, ph: r() * Math.PI * 2, sp: 0.6 + r() * 0.8 });
+      targets[3].push(logP);
+    }
+    // 異常の点はベルの周りの輪に
+    let j = 0;
+    parts.forEach((p, i) => { if (p.anomaly) { const a = (j / anomalyCount) * Math.PI * 2; targets[3][i] = { x: bell.x + Math.cos(a) * gap * 2.6, y: bell.y + Math.sin(a) * gap * 2.6 }; j++; } });
+    layout.src = src; layout.bell = bell; layout.gap = gap; layout.area = { ax, ay, aw, ah };
+    layout.logTop = ay + ah - (Math.ceil(n / (mobile ? 20 : 24)) - 1) * gap * 0.42;
+  }
+
+  const ease = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const mix = (a, b, t) => a + (b - a) * t;
+  const mixC = (a, b, t) => [0, 1, 2].map((i) => Math.round(mix(a[i], b[i], t)));
+
+  // スクロール位置 → 段階（0〜3 の連続値）
+  function progress() {
+    const mid = H * 0.55;
+    let p = 0;
+    for (let k = 0; k < steps.length; k++) {
+      const r = steps[k].getBoundingClientRect();
+      const c = r.top + r.height / 2;
+      if (c <= mid) p = k;
+      else if (k > 0) {
+        const prev = steps[k - 1].getBoundingClientRect();
+        const pc = prev.top + prev.height / 2;
+        if (pc <= mid) p = k - 1 + Math.min(1, Math.max(0, (mid - pc) / (c - pc)));
+        break;
+      }
+    }
+    return p;
+  }
+
+  function frame(time) {
+    const p = progress();
+    const k = Math.min(2, Math.floor(p)), t = ease(Math.min(1, p - k));
+    const stageNow = Math.round(p);
+    rail.forEach((li, i) => li.classList.toggle("on", i === stageNow));
+    ctx.clearRect(0, 0, W, H);
+    const { src, bell, gap } = layout;
+    const sec = time / 1000;
+
+    // 集める段階の取得先の名前
+    const srcAlpha = Math.max(0, 1 - p * 1.6) * ((mobile ? 0.15 : 0.35) + (mobile ? 0.85 : 0.65) * Math.min(1, window.scrollY / (H * 0.6)));
+    if (srcAlpha > 0) {
+      ctx.font = "500 13px 'Zen Kaku Gothic New', sans-serif"; ctx.textAlign = "center";
+      ctx.fillStyle = "rgba(230,238,234," + srcAlpha * 0.85 + ")";
+      src.forEach((s, i) => ctx.fillText(SOURCES[i], s.x, s.y - gap * 3.3));
+    }
+    // 知らせる段階のベル
+    const bellA = Math.max(0, Math.min(1, (p - 2.4) / 0.5));
+    if (bellA > 0) {
+      ctx.save(); ctx.translate(bell.x, bell.y); ctx.globalAlpha = bellA;
+      const s = gap * 0.9;
+      ctx.fillStyle = "rgb(255,201,74)";
+      ctx.beginPath();
+      ctx.moveTo(-s, s * 0.7); ctx.lineTo(-s * 0.75, s * 0.35); ctx.lineTo(-s * 0.75, -s * 0.2);
+      ctx.quadraticCurveTo(-s * 0.75, -s, 0, -s); ctx.quadraticCurveTo(s * 0.75, -s, s * 0.75, -s * 0.2);
+      ctx.lineTo(s * 0.75, s * 0.35); ctx.lineTo(s, s * 0.7); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.arc(0, s * 0.92, s * 0.22, 0, Math.PI * 2); ctx.fill();
+      ctx.font = "500 14px 'Zen Kaku Gothic New', sans-serif"; ctx.textAlign = "center"; ctx.fillStyle = "#e6eeea";
+      ctx.fillText("通知 " + parts.filter((q) => q.anomaly).length + "件", 0, gap * 4.2);
+      ctx.fillStyle = "rgba(138,165,173,1)";
+      ctx.textAlign = "left";
+      ctx.fillText("記録 " + parts.filter((q) => !q.anomaly).length + "件（いつもの範囲）", layout.area.ax - bell.x, layout.logTop - gap * 0.9 - bell.y);
+      ctx.restore();
+    }
+
+    // 粒子
+    const judge = Math.max(0, Math.min(1, p - 1.4) / 0.6);
+    const settle = Math.max(0, Math.min(1, p - 2));
+    const intro = Math.min(1, window.scrollY / (H * 0.6));
+    const introA = (mobile ? 0.15 : 0.35) + (mobile ? 0.85 : 0.65) * intro;
+    for (let i = 0; i < parts.length; i++) {
+      const q = parts[i], a = targets[k][i], b = targets[k + 1][i];
+      let x = mix(a.x, b.x, t), y = mix(a.y, b.y, t);
+      if (!reduce) {
+        const wob = (p < 0.8 ? 1 - p / 0.8 : 0) * gap * 0.35 + 0.6;
+        x += Math.cos(sec * q.sp + q.ph) * wob; y += Math.sin(sec * q.sp * 1.3 + q.ph) * wob;
+      }
+      let col = SKY, alpha = 0.9, r = gap * 0.16;
+      if (q.anomaly) { col = mixC(SKY, AMBER, judge); r = gap * (0.16 + 0.1 * judge); }
+      else { col = mixC(SKY, DIM, judge * 0.85); alpha = 0.9 - judge * 0.35; r *= 1 - 0.55 * ease(settle); }
+      alpha *= introA;
+      ctx.fillStyle = "rgba(" + col[0] + "," + col[1] + "," + col[2] + "," + alpha + ")";
+      ctx.beginPath(); ctx.arc(x, y, Math.max(1.4, r), 0, Math.PI * 2); ctx.fill();
+      if (q.anomaly && judge > 0.5) {
+        ctx.strokeStyle = "rgba(255,201,74," + (judge - 0.5) * 0.7 + ")"; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(x, y, r * 2.2, 0, Math.PI * 2); ctx.stroke();
+      }
+    }
+    if (!reduce) requestAnimationFrame(frame);
+  }
+
+  layout();
+  let rt;
+  window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { layout(); if (reduce) frame(0); }, 120); });
+  if (reduce) { window.addEventListener("scroll", () => frame(0), { passive: true }); frame(0); }
+  else requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

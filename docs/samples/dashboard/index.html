@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>監視ボード（制作サンプル）</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #edf1f2; --grid: #d3dce0; --ink: #18232f; --muted: #55636e;
+    --panel: #f8fafa; --alert: #c7343f; --ok: #2f7d5b; --warn: #b7791f; --marker: #f3c64b;
+    --display: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
+    --body: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.6; }
+  :focus-visible { outline: 3px solid #2e66a8; outline-offset: 2px; }
+  .app { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 100vh; }
+
+  aside { background: var(--ink); color: #cfd8de; padding: 20px 14px; position: sticky; top: 0; height: 100vh; }
+  .brand { font-family: var(--display); font-weight: 900; color: #fff; font-size: 18px; padding: 4px 10px 18px; }
+  .brand small { display: block; font-family: var(--body); font-weight: 400; font-size: 12px; color: #9aa8b3; }
+  aside nav a { display: flex; justify-content: space-between; align-items: center; color: #cfd8de; text-decoration: none; padding: 9px 10px; border-radius: 4px; font-size: 14.5px; }
+  aside nav a:hover { background: rgba(255,255,255,.07); color: #fff; }
+  aside nav a[aria-current="page"] { background: #edf1f2; color: var(--ink); font-weight: 700; }
+  aside nav .count { background: var(--alert); color: #fff; font-size: 12px; border-radius: 999px; padding: 0 8px; min-width: 22px; text-align: center; }
+  aside .back { position: absolute; bottom: 18px; left: 24px; right: 14px; font-size: 13px; color: #9aa8b3; }
+  aside .back a { color: #cfd8de; }
+
+  main { padding: 22px 28px 48px; min-width: 0; }
+  .topbar { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  h1 { font-family: var(--display); font-weight: 900; font-size: 26px; margin: 0; }
+  .topbar .meta { color: var(--muted); font-size: 13.5px; }
+  .notice { font-size: 13px; color: var(--muted); background: #fff; border-left: 4px solid var(--marker); padding: 6px 12px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }
+  .kpi { background: #fff; border: 1px solid var(--grid); padding: 14px 16px; }
+  .kpi .k { font-size: 13px; color: var(--muted); }
+  .kpi .v { font-family: var(--display); font-weight: 900; font-size: 30px; line-height: 1.25; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .kpi .v small { font-size: 15px; font-weight: 700; margin-left: 3px; }
+  .kpi .d { font-size: 12.5px; color: var(--muted); }
+  .kpi.attn { border-color: var(--alert); box-shadow: inset 4px 0 0 var(--alert); }
+  .kpi.attn .v { color: var(--alert); }
+
+  .panel { background: #fff; border: 1px solid var(--grid); margin-bottom: 18px; }
+  .panel > header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--grid); }
+  .panel h2 { font-family: var(--display); font-weight: 700; font-size: 17px; margin: 0; }
+  .tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+  .tabs button { font: 14px var(--body); border: 1px solid var(--grid); background: var(--panel); color: var(--ink); padding: 5px 12px; border-radius: 3px; cursor: pointer; }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .chart-wrap {
+    padding: 12px 8px 8px 16px;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 100% 24px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 24px 100%,
+      var(--panel);
+  }
+  .chart-cap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: 13px; color: var(--muted); padding-right: 10px; }
+  .chart-cap b { color: var(--ink); font-family: var(--display); font-weight: 700; font-size: 15px; }
+  .legend span { margin-left: 14px; white-space: nowrap; }
+  .legend i { display: inline-block; width: 14px; height: 10px; vertical-align: -1px; margin-right: 5px; }
+  canvas { display: block; width: 100%; height: 300px; }
+
+  .two { display: grid; grid-template-columns: 1.35fr 1fr; gap: 18px; align-items: start; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--grid); vertical-align: middle; }
+  th { white-space: nowrap; font-size: 12.5px; color: var(--muted); font-weight: 700; background: var(--panel); }
+  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr.open td:first-child { box-shadow: inset 3px 0 0 var(--alert); }
+  select.status { font: 13.5px var(--body); padding: 3px 6px; border: 1px solid var(--grid); border-radius: 3px; background: #fff; }
+  .pill { font-size: 12.5px; font-weight: 700; padding: 1px 9px; border-radius: 999px; white-space: nowrap; }
+  .pill.ok { color: var(--ok); background: #e7f3ed; }
+  .pill.ng { color: var(--alert); background: #fbe9ea; }
+  .pill.retry { color: var(--warn); background: #fbf1e0; }
+  .empty { padding: 18px 16px; color: var(--muted); }
+
+  @media (max-width: 1000px) {
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .two { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .app { grid-template-columns: 1fr; }
+    aside { position: static; height: auto; padding: 12px 14px; }
+    aside nav { display: flex; gap: 4px; overflow-x: auto; }
+    aside nav a { white-space: nowrap; }
+    .brand { padding-bottom: 8px; }
+    aside .back { position: static; margin-top: 8px; }
+    main { padding: 16px 14px 40px; }
+    #alerts th:nth-child(3), #alerts td:nth-child(3) { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand">監視ボード<small>制作サンプル</small></div>
+    <nav aria-label="メニュー">
+      <a href="#top" aria-current="page">概要</a>
+      <a href="#alerts">アラート <span class="count" id="nav-count">0</span></a>
+      <a href="#jobs">定期実行</a>
+    </nav>
+    <p class="back"><a href="../../index.html">ポートフォリオに戻る</a></p>
+  </aside>
+
+  <main id="top">
+    <div class="topbar">
+      <div>
+        <h1>概要</h1>
+        <div class="meta">監視対象 3サイト ／ 期間 直近70日 ／ 最終更新 本日 9:00</div>
+      </div>
+      <div class="notice">表示しているサイト名と数値は、すべてサンプルデータです。</div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="k">監視中の指標</div><div class="v" id="k-metrics">3</div><div class="d">毎日 9:00 に判定</div></div>
+      <div class="kpi attn" id="k-open-box"><div class="k">未対応のアラート</div><div class="v" id="k-open">0</div><div class="d" id="k-open-d"></div></div>
+      <div class="kpi"><div class="k">本日の定期実行</div><div class="v" id="k-jobs">0</div><div class="d" id="k-jobs-d"></div></div>
+      <div class="kpi"><div class="k">会員サイトの応答時間（本日）</div><div class="v" id="k-lat">0<small>ms</small></div><div class="d" id="k-lat-d"></div></div>
+    </div>
+
+    <section class="panel" aria-labelledby="chart-h">
+      <header>
+        <h2 id="chart-h">指標の推移</h2>
+        <div class="tabs" role="tablist" id="tabs"></div>
+      </header>
+      <div class="chart-wrap">
+        <div class="chart-cap"><b id="chart-title"></b>
+          <span class="legend"><span><i style="background:#18232f;height:2px;vertical-align:3px"></i>実績</span><span><i style="background:rgba(85,99,110,.25)"></i>いつもの範囲</span><span><i style="background:#c7343f;border-radius:50%;width:10px"></i>範囲外</span></span></div>
+        <canvas id="cv" role="img" aria-label="選んだ指標の直近70日の推移と、いつもの範囲を示すグラフ"></canvas>
+      </div>
+    </section>
+
+    <div class="two">
+      <section class="panel" id="alerts" aria-labelledby="alerts-h">
+        <header><h2 id="alerts-h">アラート</h2><span class="meta" style="font-size:13px;color:var(--muted)">状態を変えると件数に反映されます</span></header>
+        <table>
+          <thead><tr><th>検知日</th><th>対象</th><th>内容</th><th>状態</th></tr></thead>
+          <tbody id="alert-rows"></tbody>
+        </table>
+      </section>
+
+      <section class="panel" id="jobs" aria-labelledby="jobs-h">
+        <header><h2 id="jobs-h">定期実行の履歴</h2></header>
+        <table>
+          <thead><tr><th>時刻</th><th>処理</th><th>結果</th></tr></thead>
+          <tbody id="job-rows"></tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="../../demo.js"></script>
+<script>
+(function () {
+  "use strict";
+  const W = window.WatchDemo;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fmt = (v) => Math.round(v).toLocaleString("ja-JP");
+
+  // 今日を基準に日付を振る（サンプル）
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const dateOf = (dayIdx, shift) => { const d = new Date(today); d.setDate(d.getDate() - (W.N - 1 - dayIdx) - shift); return d; };
+  const md = (d) => (d.getMonth() + 1) + "/" + d.getDate();
+
+  // 監視対象（シフトは「異常の日が何日前か」をずらすため）
+  const TARGETS = [
+    { id: "reserve", site: "予約サイト", kind: "visits", seed: 101, shift: -9 },
+    { id: "member", site: "会員サイト", kind: "latency", seed: 233, shift: -2 },
+    { id: "apply", site: "申込みページ", kind: "visits", seed: 377, shift: -11 },
+  ];
+  TARGETS.forEach((t) => {
+    const p = W.pick(t.seed, t.kind);
+    t.series = p.series; t.hit = p.hit;
+    // 画面上の最終日を「今日」にそろえるため、shift 日ぶん末尾を切る
+    const cut = W.N + t.shift;
+    t.vals = t.series.vals.slice(0, cut);
+    t.bands = t.vals.map((_, d) => (d <= t.hit.day ? W.judge(t.series, d) : null));
+    t.label = t.series.label.replace("Webサイトの", "") + "：" + t.site;
+  });
+  const lastDate = (t, d) => { const x = new Date(today); x.setDate(x.getDate() - (t.vals.length - 1 - d)); return x; };
+
+  // ---- アラート ----
+  const alerts = TARGETS.map((t, i) => {
+    const v = t.series.vals[t.hit.day], j = t.hit.j;
+    const text = t.kind === "visits"
+      ? "アクセス数が同じ曜日の平均の " + Math.round(j.ratio * 100) + "% に減少（" + fmt(v) + "件）"
+      : "応答時間が直近2週間の平均の " + j.ratio.toFixed(1) + " 倍（" + fmt(v) + "ms）";
+    return { date: lastDate(t, t.hit.day), site: t.site, text };
+  }).sort((a, b) => b.date - a.date);
+  // 新しいものから 未対応 → 対応中 → 解決（サンプル）
+  alerts.forEach((a, i) => { a.status = ["未対応", "対応中"][i] || "解決"; });
+  // 過去の解決済みアラート（サンプル）
+  alerts.push({ date: new Date(today.getTime() - 34 * 864e5), site: "予約サイト", text: "外部APIの応答なし（3回連続）", status: "解決" });
+
+  const rowsEl = document.getElementById("alert-rows");
+  function renderAlerts() {
+    rowsEl.innerHTML = "";
+    alerts.forEach((a, i) => {
+      const tr = document.createElement("tr");
+      if (a.status !== "解決") tr.className = "open";
+      tr.innerHTML = "<td class='num'>" + md(a.date) + "</td><td style='white-space:nowrap'>" + a.site + "</td><td>" + a.text + "</td><td></td>";
+      const sel = document.createElement("select");
+      sel.className = "status"; sel.setAttribute("aria-label", md(a.date) + " " + a.site + " のアラートの状態");
+      ["未対応", "対応中", "解決"].forEach((s) => { const o = document.createElement("option"); o.textContent = s; if (s === a.status) o.selected = true; sel.appendChild(o); });
+      sel.addEventListener("change", () => { a.status = sel.value; renderAlerts(); renderKpis(); });
+      tr.lastChild.appendChild(sel);
+      rowsEl.appendChild(tr);
+    });
+  }
+
+  // ---- 定期実行（サンプルの履歴） ----
+  const JOBS = [
+    ["9:00", "アクセス数の取得（予約サイト）", "14秒", "ok"],
+    ["9:00", "アクセス数の取得（申込みページ）", "11秒", "ok"],
+    ["9:01", "応答時間の集計（会員サイト）", "6秒", "ok"],
+    ["9:01", "外部APIからの在庫データ取得", "1回目失敗 → 再試行で成功", "retry"],
+    ["9:02", "判定とアラートの作成", "3秒", "ok"],
+    ["9:02", "Slack への通知", "1秒", "ok"],
+    ["前日 9:00", "アクセス数の取得（予約サイト）", "13秒", "ok"],
+    ["前日 9:01", "外部APIからの在庫データ取得", "応答なし（3回）", "ng"],
+  ];
+  const jobEl = document.getElementById("job-rows");
+  const LABEL = { ok: "成功", retry: "再試行で成功", ng: "失敗" };
+  JOBS.forEach(([t, name, dur, st]) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = "<td class='num'>" + t + "</td><td>" + name + "<br><small style='color:var(--muted)'>" + dur + "</small></td><td><span class='pill " + st + "'>" + LABEL[st] + "</span></td>";
+    jobEl.appendChild(tr);
+  });
+
+  // ---- KPI ----
+  function renderKpis() {
+    const open = alerts.filter((a) => a.status !== "解決");
+    const unhandled = alerts.filter((a) => a.status === "未対応").length;
+    document.getElementById("k-open").textContent = open.length;
+    document.getElementById("k-open-d").textContent = "うち未着手 " + unhandled + "件";
+    document.getElementById("k-open-box").classList.toggle("attn", open.length > 0);
+    document.getElementById("nav-count").textContent = open.length;
+    document.getElementById("nav-count").style.display = open.length ? "" : "none";
+    const todayJobs = JOBS.filter((j) => !j[0].startsWith("前日"));
+    const okJobs = todayJobs.filter((j) => j[3] !== "ng").length;
+    document.getElementById("k-jobs").innerHTML = okJobs + "<small>/ " + todayJobs.length + "</small>";
+    document.getElementById("k-jobs-d").textContent = "失敗 " + (todayJobs.length - okJobs) + "件、再試行 " + todayJobs.filter((j) => j[3] === "retry").length + "件";
+    const m = TARGETS[1], lat = m.vals[m.vals.length - 1];
+    const prev = m.vals.slice(-8, -1).reduce((a, b) => a + b, 0) / 7;
+    document.getElementById("k-lat").innerHTML = fmt(lat) + "<small>ms</small>";
+    document.getElementById("k-lat-d").textContent = "直近7日の平均 " + fmt(prev) + "ms";
+  }
+
+  // ---- グラフ ----
+  const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+  const C = { ink: "#18232f", muted: "#55636e", alert: "#c7343f", band: "rgba(85,99,110,.16)", marker: "rgba(243,198,75,.6)" };
+  function niceStep(raw) { const p = Math.pow(10, Math.floor(Math.log10(raw))); const n = raw / p; return (n < 1.5 ? 1 : n < 3.5 ? 2 : n < 7.5 ? 5 : 10) * p; }
+  let cur = 0, upto = 0, timer = null;
+
+  function draw() {
+    const t = TARGETS[cur];
+    const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    const axisW = 66, padT = 8, padB = 24, pw = w - axisW, ph = h - padT - padB;
+    let lo = Infinity, hi = -Infinity;
+    t.vals.forEach((v) => { lo = Math.min(lo, v); hi = Math.max(hi, v); });
+    t.bands.forEach((b) => { if (b) { lo = Math.min(lo, b.lo); hi = Math.max(hi, b.hi); } });
+    lo = Math.max(0, lo - (hi - lo) * 0.08); hi += (hi - lo) * 0.06;
+    const n = t.vals.length, X = (i) => (i + 0.5) * (pw / n), Y = (v) => padT + (hi - v) / (hi - lo) * ph;
+    ctx.font = "12px 'BIZ UDPGothic', sans-serif"; ctx.fillStyle = C.muted; ctx.textBaseline = "middle";
+    const step = niceStep((hi - lo) / 5);
+    for (let v = Math.ceil(lo / step) * step; v < hi; v += step) ctx.fillText(fmt(v) + t.series.unit, pw + 8, Y(v));
+    ctx.textBaseline = "top";
+    for (let i = n - 1; i >= 0; i -= 14) { const s = md(lastDate(t, i)); ctx.fillText(s, X(i) - ctx.measureText(s).width / 2, padT + ph + 6); }
+    ctx.fillStyle = C.band;
+    for (let i = 0; i <= upto && i < n; i++) { const b = t.bands[i]; if (b) ctx.fillRect(X(i) - pw / n / 2, Y(b.hi), pw / n + .5, Y(b.lo) - Y(b.hi)); }
+    if (upto >= t.hit.day) { ctx.fillStyle = C.marker; ctx.fillRect(X(t.hit.day) - pw / n * .9, padT, pw / n * 1.8, ph); }
+    ctx.strokeStyle = C.ink; ctx.lineWidth = 1.8; ctx.lineJoin = "round"; ctx.beginPath();
+    for (let i = 0; i <= upto && i < n; i++) { const x = X(i), y = Y(t.vals[i]); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+    ctx.stroke();
+    for (let i = 0; i <= upto && i < n; i++) {
+      const b = t.bands[i], out = i >= t.hit.day && i < t.hit.day + 4 && (!b || t.vals[i] > b.hi || t.vals[i] < b.lo);
+      ctx.fillStyle = out ? C.alert : C.ink; ctx.beginPath(); ctx.arc(X(i), Y(t.vals[i]), out ? 4 : 1.8, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+  function show(i) {
+    cur = i;
+    [...tabsEl.children].forEach((b, k) => { b.setAttribute("aria-selected", k === i ? "true" : "false"); b.tabIndex = k === i ? 0 : -1; });
+    document.getElementById("chart-title").textContent = TARGETS[i].label;
+    if (timer) cancelAnimationFrame(timer);
+    if (reduce) { upto = TARGETS[i].vals.length; draw(); return; }
+    upto = 0;
+    const startT = performance.now(), total = TARGETS[i].vals.length;
+    (function step(now) {
+      upto = Math.min(total, Math.floor((now - startT) / 14));
+      draw();
+      if (upto < total) timer = requestAnimationFrame(step);
+    })(startT);
+  }
+  const tabsEl = document.getElementById("tabs");
+  TARGETS.forEach((t, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.setAttribute("role", "tab"); b.textContent = t.site;
+    b.addEventListener("click", () => show(i));
+    b.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        const k = (i + (e.key === "ArrowRight" ? 1 : TARGETS.length - 1)) % TARGETS.length;
+        show(k); tabsEl.children[k].focus();
+      }
+    });
+    tabsEl.appendChild(b);
+  });
+  let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(draw, 150); });
+
+  renderAlerts(); renderKpis();
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => show(1));
+})();
+</script>
+</body>
+</html>

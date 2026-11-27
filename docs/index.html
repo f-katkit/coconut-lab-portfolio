@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kat｜業務自動化・データ収集・監視</title>
+    <meta
+      name="description"
+      content="個人開発者 Kat のポートフォリオ。データ収集、スプレッドシートの集計・転記、監視と通知を自動化します。制作サンプルと開発事例を掲載しています。"
+    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #f7f9fb;
+        --surface: #fff;
+        --ink: #18232f;
+        --muted: #46566a;
+        --line: #d6dfe7;
+        --blue: #174b82;
+        --blue-dark: #12375d;
+        --display: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
+        --body: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font: 1rem/1.8 var(--body);
+      }
+
+      h1, h2, h3 {
+        font-family: var(--display);
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+      }
+
+      h2 {
+        margin: 0 0 1.25rem;
+        font-size: clamp(1.75rem, 4vw, 2.25rem);
+        font-weight: 900;
+      }
+
+      h3 {
+        margin: 0 0 .55rem;
+        font-size: 1.25rem;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      a {
+        color: var(--blue);
+        text-underline-offset: .25em;
+      }
+
+      a:hover {
+        text-decoration-thickness: 2px;
+      }
+
+      :focus-visible {
+        outline: 3px solid #2e66a8;
+        outline-offset: 4px;
+      }
+
+      [id] {
+        scroll-margin-top: 1.25rem;
+      }
+
+      .wrap {
+        width: min(100% - 2 * clamp(1rem, 4vw, 2.5rem), 70rem);
+        margin-inline: auto;
+      }
+
+      .site-header {
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .site-header .wrap,
+      .site-nav,
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .site-header .wrap {
+        justify-content: space-between;
+        gap: .2rem 1.5rem;
+        padding-block: .75rem;
+      }
+
+      .brand {
+        color: var(--ink);
+        font: 900 1.5rem var(--display);
+        text-decoration: none;
+      }
+
+      .site-nav {
+        gap: 0 clamp(.75rem, 2.5vw, 1.75rem);
+      }
+
+      .site-nav a {
+        padding-block: .45rem;
+        color: var(--muted);
+        font-size: .875rem;
+        text-decoration: none;
+      }
+
+      .site-nav a:hover {
+        color: var(--blue);
+        text-decoration: underline;
+      }
+
+      .hero {
+        padding-block: clamp(2.25rem, 5vw, 3.75rem);
+        border-bottom: 1px solid var(--line);
+        background:
+          linear-gradient(90deg, #e6eff8 0%, #e6eff8b3 54%, #e6eff800),
+          linear-gradient(#cddceb 1px, transparent 1px) 0 0 / 2rem 2rem,
+          linear-gradient(90deg, #cddceb 1px, transparent 1px) 0 0 / 2rem 2rem,
+          #e6eff8;
+      }
+
+      .byline {
+        color: var(--blue);
+        font-weight: 700;
+        font-size: .875rem;
+      }
+
+      h1 {
+        margin: .65rem 0 1rem;
+        font-size: clamp(2rem, 5.6vw, 4.25rem);
+        font-weight: 900;
+        letter-spacing: -.025em;
+      }
+
+      .lead {
+        max-width: 39em;
+        font-size: clamp(1rem, 2vw, 1.125rem);
+      }
+
+      .actions {
+        gap: .75rem;
+        margin-top: 1.5rem;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.75rem;
+        padding: .55rem 1.1rem;
+        border: 1px solid var(--blue);
+        border-radius: .45rem;
+        background: var(--blue);
+        color: #fff;
+        font-weight: 700;
+        text-align: center;
+        text-decoration: none;
+      }
+
+      .button:hover {
+        background: var(--blue-dark);
+      }
+
+      .button.secondary {
+        background: var(--surface);
+        color: var(--blue);
+      }
+
+      .button.secondary:hover {
+        background: #eef5fc;
+      }
+
+      .section {
+        padding-block: clamp(2.5rem, 6vw, 4.5rem);
+        border-bottom: 1px solid var(--line);
+      }
+
+      #samples {
+        padding-top: clamp(2.5rem, 5vw, 3.5rem);
+      }
+
+      .section-intro {
+        margin: -.65rem 0 1.25rem;
+        color: var(--muted);
+      }
+
+      .samples,
+      .works {
+        display: grid;
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .samples {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .sample,
+      .work {
+        border: 1px solid var(--line);
+        border-radius: .7rem;
+        background: var(--surface);
+      }
+
+      .sample-link {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        border-radius: inherit;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .sample-link:hover {
+        background: #f5f9fe;
+      }
+
+      .sample-link:hover .demo-label {
+        text-decoration-thickness: 2px;
+      }
+
+      .sample img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: .65rem .65rem 0 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .sample-copy,
+      .work {
+        padding: clamp(1rem, 2vw, 1.4rem);
+      }
+
+      .sample-copy {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .55rem;
+      }
+
+      .sample-copy h3 {
+        margin: 0;
+      }
+
+      .sample-copy p,
+      .work p,
+      .service dd,
+      .steps p {
+        color: var(--muted);
+      }
+
+      .demo-label {
+        margin-top: auto;
+        padding-top: .2rem;
+        color: var(--blue);
+        font-size: .875rem;
+        font-weight: 700;
+        text-decoration: underline;
+      }
+
+      .services {
+        margin: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .service {
+        display: grid;
+        grid-template-columns: minmax(12rem, 1fr) minmax(0, 2fr);
+        gap: .25rem 1rem;
+        padding-block: .9rem;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .service dt,
+      .steps strong {
+        font-weight: 700;
+      }
+
+      .service dd {
+        margin: 0;
+      }
+
+      .tools,
+      .note {
+        margin-top: .65rem;
+        color: var(--muted);
+        font-size: .875rem;
+      }
+
+      .works {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem 2rem;
+        margin: 0;
+        padding-inline-start: 1.5rem;
+      }
+
+      .steps li::marker {
+        color: var(--blue);
+        font-weight: 700;
+      }
+
+      .steps p {
+        margin-top: .2rem;
+      }
+
+      .note {
+        margin-top: 1.25rem;
+      }
+
+      .contact.section {
+        border-bottom: 0;
+      }
+
+      .contact-panel {
+        padding: clamp(1.25rem, 4vw, 2.5rem);
+        border-radius: .75rem;
+        background: var(--blue-dark);
+        color: #fff;
+      }
+
+      .contact-panel h2 {
+        margin-bottom: .5rem;
+      }
+
+      .contact-panel .button {
+        border-color: #fff;
+        background: #fff;
+        color: var(--blue-dark);
+      }
+
+      .contact-panel .button:hover {
+        background: #e6eff8;
+      }
+
+      .contact-panel .button:focus-visible {
+        outline-color: #fff;
+      }
+
+      footer {
+        padding-block: 1rem 1.5rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: .875rem;
+      }
+
+      @media (max-width: 52rem) {
+        .samples {
+          grid-template-columns: 1fr;
+        }
+
+        .sample-link {
+          display: grid;
+          grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+          align-items: center;
+        }
+
+        .sample img {
+          border-radius: .65rem 0 0 .65rem;
+          border-bottom: 0;
+        }
+      }
+
+      @media (max-width: 36rem) {
+        .site-header .wrap {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .sample-link {
+          display: block;
+        }
+
+        .sample img {
+          border-radius: .65rem .65rem 0 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .service,
+        .works,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+
+        .contact-panel .button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body id="top">
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="#top">Kat</a>
+        <nav class="site-nav" aria-label="ページ内">
+          <a href="#samples">制作サンプル</a>
+          <a href="#asks">対応できること</a>
+          <a href="#works">開発事例</a>
+          <a href="#contact">ご相談</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-h">
+        <div class="wrap">
+          <p class="byline">個人開発者 Kat</p>
+          <h1 id="hero-h">日々の集計と確認を、<br />自動化します。</h1>
+          <p class="lead">
+            Python・Google Apps Script などを使い、データ収集、表の集計・転記、監視と通知の仕組みを作ります。仕様が決まっている小〜中規模の開発をお受けしています。
+          </p>
+          <div class="actions">
+            <a class="button" href="#contact">開発を相談する</a>
+            <a class="button secondary" href="#samples">サンプルを見る</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="wrap">
+        <section id="samples" class="section" aria-labelledby="samples-h">
+          <h2 id="samples-h">制作サンプル</h2>
+          <p class="section-intro">サンプル内の会社名・店舗名・数値は架空です。</p>
+          <ul class="samples" role="list">
+            <li class="sample">
+              <a class="sample-link" href="samples/dashboard/index.html" aria-labelledby="dashboard-title dashboard-demo">
+                <img src="assets/dashboard.webp" alt="" width="800" height="500" />
+                <div class="sample-copy">
+                  <h3 id="dashboard-title">監視ダッシュボード</h3>
+                  <p>アクセス数と応答時間の異常を検知。指標の切り替えやアラートのステータス変更を試せます。</p>
+                  <span class="demo-label" id="dashboard-demo">デモを見る</span>
+                </div>
+              </a>
+            </li>
+            <li class="sample">
+              <a class="sample-link" href="samples/corporate/index.html" aria-labelledby="corporate-title corporate-demo">
+                <img src="assets/corporate.webp" alt="" width="800" height="500" />
+                <div class="sample-copy">
+                  <h3 id="corporate-title">サービス紹介ページ</h3>
+                  <p>法人向けサービスやカフェなど、デザインと問い合わせフォームを6パターンで切り替えられます。</p>
+                  <span class="demo-label" id="corporate-demo">デモを見る</span>
+                </div>
+              </a>
+            </li>
+            <li class="sample">
+              <a class="sample-link" href="samples/flow/index.html" aria-labelledby="flow-demo-title flow-demo">
+                <img src="assets/flow.webp" alt="" width="800" height="500" />
+                <div class="sample-copy">
+                  <h3 id="flow-demo-title">スクロールで動く紹介ページ</h3>
+                  <p>データ収集から通知までの流れを、スクロールに連動する粒子で表現しています。</p>
+                  <span class="demo-label" id="flow-demo">デモを見る</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section id="asks" class="section" aria-labelledby="asks-h">
+          <h2 id="asks-h">対応できること</h2>
+          <dl class="services">
+            <div class="service">
+              <dt>データ収集・整形</dt>
+              <dd>Web サイトや API のデータを定期取得し、CSV やスプレッドシートにまとめます。取得元の利用規約とアクセス頻度を確認します。</dd>
+            </div>
+            <div class="service">
+              <dt>集計・転記・帳票の自動化</dt>
+              <dd>Google Apps Script や Excel VBA で、繰り返し行う表計算の作業を自動化します。</dd>
+            </div>
+            <div class="service">
+              <dt>監視・通知</dt>
+              <dd>在庫、サイトの更新や応答時間、サーバーの状態を確認し、変化や点検結果を Slack・LINE・メールで通知します。</dd>
+            </div>
+            <div class="service">
+              <dt>業務ツールの開発</dt>
+              <dd>決まった手順で行う判定や集計をツール化します。必要に応じて AI による要約や分類も組み込みます。</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section id="works" class="section" aria-labelledby="works-h">
+          <h2 id="works-h">開発事例</h2>
+          <p class="section-intro">自分の業務用に開発し、運用しているツールです。</p>
+          <ul class="works" role="list">
+            <li class="work">
+              <h3>日次データの変化を Slack に通知</h3>
+              <p>株価などの数値データから条件に合う変化を検出し、Windows サーバーから毎日通知しています。</p>
+              <p class="tools">Python・データベース・Slack</p>
+            </li>
+            <li class="work">
+              <h3>公開情報の収集と朝のレポート</h3>
+              <p>収集した候補をルールと AI で絞り込み、毎朝レポートを作成。元データを保存し、条件変更時に再集計できます。</p>
+              <p class="tools">Python・SQLite・Claude API・Slack</p>
+            </li>
+            <li class="work">
+              <h3>複数の公開データから指数を毎日更新</h3>
+              <p>種類の異なる公開データを過去の分布に基づいて 0〜100 にそろえ、ひとつの指数として Web ページに公開しています。</p>
+              <p class="tools">Python・静的サイト・VPS</p>
+            </li>
+            <li class="work">
+              <h3>サーバーの日次点検</h3>
+              <p>毎日の点検結果を Slack に通知し、点検スクリプトと fail2ban などの設定を Ansible で管理しています。</p>
+              <p class="tools">シェルスクリプト・Ansible・fail2ban</p>
+            </li>
+          </ul>
+        </section>
+
+        <section id="flow" class="section" aria-labelledby="flow-h">
+          <h2 id="flow-h">ご依頼の進め方</h2>
+          <ol class="steps">
+            <li>
+              <strong>仕様の確認</strong>
+              <p>入力・出力と完成の基準を、着手前にすり合わせます。</p>
+            </li>
+            <li>
+              <strong>実装・検証</strong>
+              <p>合意した条件を、テストや実際の入出力例で確認します。</p>
+            </li>
+            <li>
+              <strong>納品</strong>
+              <p>ソースコードと使い方の手順書をお渡しします。納品後の小さな修正にも対応します。</p>
+            </li>
+          </ol>
+          <p class="note">開発には AI のコーディング支援を利用します。利用条件がある案件では、その条件に従います。</p>
+        </section>
+
+        <section id="contact" class="section contact" aria-labelledby="contact-h">
+          <div class="contact-panel">
+            <h2 id="contact-h">ご依頼・ご相談</h2>
+            <p>プロフィールから、自動化したい作業やご希望の納期をメッセージでお知らせください。</p>
+            <div class="actions">
+              <a class="button" href="https://crowdworks.jp/public/employees/7352103" id="link-cw">クラウドワークスのプロフィール</a>
+              <a class="button" href="https://www.lancers.jp/profile/coconut-lab" id="link-lancers">ランサーズのプロフィール</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">© 2026 Kat</div>
+    </footer>
+  </body>
+</html>
