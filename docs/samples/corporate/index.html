@@ -7,262 +7,14 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&family=Klee+One:wght@600&family=Zen+Maru+Gothic:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@400;500;800&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Zen+Old+Mincho:wght@600;700&display=swap" rel="stylesheet">
-<style>
-  /* ---------- テーマ ---------- */
-  :root, [data-theme="b2b"] {
-    --bg: #ffffff; --tint: #f4f7fa; --line: #dde3ea; --text: #1e2a35; --sub: #5b6875;
-    --primary: #1f3f66; --primary-2: #2d5689; --on-primary: #ffffff;
-    --ok: #2f7d5b; --ok-bg: #e7f3ed; --warn: #b7791f; --warn-bg: #fbf1e0;
-    --head: "Noto Serif JP", "Hiragino Mincho ProN", serif; --head-w: 700;
-    --body: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
-    --r: 4px; --r-card: 14px;
-    --hero-bg: linear-gradient(180deg, #f4f7fa, #fff 70%);
-    --dark: #1f3f66; --dark-text: #d9e3ef; --foot: #14263d; --foot-text: #b8c4d2;
-  }
-  [data-theme="cafe"] {
-    --bg: #f6f7f2; --tint: #eceee4; --line: #d8dccd; --text: #2b2a26; --sub: #66655c;
-    --primary: #3c5a44; --primary-2: #4c7055; --on-primary: #f6f7f2;
-    --ok: #3c5a44; --ok-bg: #e2ebdf; --warn: #8a5a2b; --warn-bg: #f1e3d2;
-    --head: "Klee One", "Hiragino Mincho ProN", serif; --head-w: 600;
-    --body: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", sans-serif;
-    --r: 999px; --r-card: 22px;
-    --hero-bg: repeating-linear-gradient(90deg, #f6f7f2 0 22px, #f1f3ec 22px 23px);
-    --dark: #2f4636; --dark-text: #dfe7da; --foot: #26372b; --foot-text: #c4cfbf;
-  }
-  [data-theme="kids"] {
-    --bg: #ffffff; --tint: #eef7ff; --line: #d6e6f5; --text: #22314a; --sub: #56667f;
-    --primary: #ff7a2f; --primary-2: #f06818; --on-primary: #ffffff;
-    --ok: #138a8a; --ok-bg: #dcf5f3; --warn: #c2410c; --warn-bg: #ffe9dc;
-    --head: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif; --head-w: 800;
-    --body: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
-    --r: 12px; --r-card: 20px;
-    --hero-bg: radial-gradient(#cfe5fb 1.4px, transparent 1.6px) 0 0 / 22px 22px, #eef7ff;
-    --dark: #138a8a; --dark-text: #e3fbf9; --foot: #22314a; --foot-text: #c3cfe0;
-  }
-
-  [data-theme="dental"] {
-    --bg: #ffffff; --tint: #eef6f5; --line: #d5e6e4; --text: #1f3133; --sub: #5a6e70;
-    --primary: #24707a; --primary-2: #2d8591; --on-primary: #ffffff;
-    --ok: #24707a; --ok-bg: #e0f1ef; --warn: #9a5b13; --warn-bg: #fbeedd;
-    --head: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif; --head-w: 700;
-    --body: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
-    --r: 10px; --r-card: 18px;
-    --hero-bg: linear-gradient(160deg, #e6f3f1 0%, #ffffff 55%);
-    --dark: #1f5960; --dark-text: #d9ecea; --foot: #173e43; --foot-text: #b9d3d1;
-  }
-  [data-theme="builder"] {
-    --bg: #ffffff; --tint: #f1efea; --line: #dcd8cf; --text: #262421; --sub: #625d55;
-    --primary: #2d2a26; --primary-2: #4a453e; --on-primary: #ffffff;
-    --ok: #8a6416; --ok-bg: #f4ead3; --warn: #2d2a26; --warn-bg: #e4e0d8;
-    --head: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif; --head-w: 900;
-    --body: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
-    --r: 0px; --r-card: 0px;
-    --hero-bg: linear-gradient(90deg, #f1efea 0 38%, #ffffff 38%);
-    --dark: #2d2a26; --dark-text: #ddd7cc; --foot: #1c1a18; --foot-text: #b5aea3;
-  }
-  [data-theme="ryokan"] {
-    --bg: #f4f3ef; --tint: #ebe9e2; --line: #d6d2c6; --text: #26292e; --sub: #63666b;
-    --primary: #2c3e57; --primary-2: #3d5475; --on-primary: #f4f3ef;
-    --ok: #7d5c2b; --ok-bg: #efe6d6; --warn: #8b3a2b; --warn-bg: #f2e1dc;
-    --head: "Zen Old Mincho", "Hiragino Mincho ProN", serif; --head-w: 700;
-    --body: "Noto Sans JP", "Hiragino Sans", sans-serif;
-    --r: 2px; --r-card: 4px;
-    --hero-bg: linear-gradient(180deg, #ebe9e2, #f4f3ef 80%);
-    --dark: #2c3e57; --dark-text: #d8dee8; --foot: #1e2b3d; --foot-text: #b4bfcf;
-  }
-
-  * { box-sizing: border-box; }
-  body { margin: 0; font-family: var(--body); color: var(--text); background: var(--bg); font-size: 16px; line-height: 1.9; }
-  a { color: var(--primary-2); }
-  :focus-visible { outline: 3px solid var(--primary-2); outline-offset: 2px; }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
-
-  /* ---------- 切り替えバナー（サンプル共通） ---------- */
-  .switcher { background: #111a22; color: #e9eef2; font-family: "Noto Sans JP", sans-serif; font-size: 13.5px; line-height: 1.5; }
-  .switcher .wrap { display: flex; align-items: center; justify-content: space-between; gap: 10px 18px; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
-  .switcher a { color: #e9eef2; }
-  .switcher .pick { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .switcher .pick span { color: #9fb0bd; }
-  .switcher button { font: 700 13.5px "Noto Sans JP", sans-serif; color: #e9eef2; background: transparent; border: 1px solid #4a5a67; border-radius: 999px; padding: 4px 14px; cursor: pointer; }
-  .switcher button[aria-pressed="true"] { background: #e9eef2; color: #111a22; border-color: #e9eef2; }
-  .switcher button:focus-visible { outline: 2px solid #ffd166; outline-offset: 2px; }
-  .switcher button { white-space: nowrap; flex: none; }
-  @media (max-width: 700px) {
-    .switcher .pick { flex-wrap: nowrap; overflow-x: auto; width: 100%; padding-bottom: 4px; scrollbar-width: thin; }
-    .switcher .pick span { flex: none; }
-  }
-
-  /* ---------- ヘッダー ---------- */
-  header.g { border-bottom: 1px solid var(--line); background: var(--bg); position: sticky; top: 0; z-index: 5; }
-  header.g .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
-  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
-  .logo svg { flex: none; }
-  .logo b { font-family: var(--head); font-weight: var(--head-w); font-size: 20px; letter-spacing: .04em; }
-  .logo small { font-size: 11px; color: var(--sub); display: block; line-height: 1.2; }
-  nav.g { display: flex; align-items: center; gap: 26px; font-size: 14.5px; }
-  nav.g a { color: var(--text); text-decoration: none; }
-  nav.g a:hover { color: var(--primary-2); }
-  .btn { display: inline-block; font-weight: 700; text-decoration: none; border-radius: var(--r); padding: 12px 22px; font-size: 15px; line-height: 1.4; border: 0; cursor: pointer; font-family: var(--body); }
-  .btn.primary { background: var(--primary); color: var(--on-primary); }
-  .btn.primary:hover { background: var(--primary-2); }
-  .btn.ghost { color: var(--primary); box-shadow: inset 0 0 0 1.5px var(--primary); background: var(--bg); }
-  nav.g .btn { padding: 9px 16px; font-size: 14px; color: var(--on-primary); }
-  [data-theme="kids"] .btn.primary { box-shadow: 0 4px 0 #c2541a; }
-  [data-theme="kids"] .btn.primary:active { transform: translateY(2px); box-shadow: 0 2px 0 #c2541a; }
-
-  /* ---------- ヒーロー ---------- */
-  .hero { padding: 72px 0 80px; background: var(--hero-bg); }
-  .hero .wrap { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
-  .hero h1 { font-family: var(--head); font-weight: var(--head-w); font-size: clamp(30px, 3.6vw, 44px); line-height: 1.5; margin: 0 0 20px; letter-spacing: .02em; }
-  .hero h1 span { display: inline-block; }
-  .hero p.lead { font-size: 17px; margin: 0 0 28px; max-width: 30em; }
-  .hero .ctas { display: flex; gap: 12px; flex-wrap: wrap; }
-  .hero .facts { display: flex; flex-wrap: wrap; gap: 6px 24px; margin: 32px 0 0; padding: 0; list-style: none; color: var(--sub); font-size: 14px; }
-  .hero .facts li { white-space: nowrap; }
-  .hero .facts li::before { content: ""; display: inline-block; width: 8px; height: 8px; background: var(--ok); border-radius: 50%; margin-right: 8px; vertical-align: 2px; }
-
-  /* 写真の左下にモックアップを重ねる */
-  .visual { display: grid; justify-self: end; width: 100%; max-width: 540px; }
-  .visual .photo { display: block; justify-self: end; width: 86%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-card); background: var(--tint); }
-  .visual .device { position: relative; justify-self: start; width: 88%; margin-top: -120px; }
-  .device { background: #fff; border: 1px solid var(--line); border-radius: var(--r-card); box-shadow: 0 18px 40px -22px rgba(31,63,102,.45); padding: 18px; max-width: 460px; }
-  [data-theme="cafe"] .device { box-shadow: 0 18px 40px -24px rgba(47,70,54,.5); transform: rotate(-1.2deg); }
-  [data-theme="kids"] .device { box-shadow: 8px 8px 0 #cfe5fb; border: 2px solid #22314a; }
-  .device .top { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: 10px; gap: 10px; }
-  .device .top b { font-size: 16px; font-family: var(--head); font-weight: var(--head-w); }
-  .device .top span { font-size: 12.5px; color: var(--sub); white-space: nowrap; }
-  .checks { list-style: none; margin: 8px 0 0; padding: 0; }
-  .checks li { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 10px 2px; border-bottom: 1px dashed var(--line); font-size: 14.5px; }
-  .checks li small { display: block; color: var(--sub); font-size: 12.5px; }
-  .tag { font-size: 12.5px; font-weight: 700; padding: 2px 10px; border-radius: 999px; align-self: center; white-space: nowrap; }
-  .tag.ok { color: var(--ok); background: var(--ok-bg); }
-  .tag.warn { color: var(--warn); background: var(--warn-bg); }
-  .tag.plain { color: var(--sub); background: var(--tint); }
-  .device .foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 12px; font-size: 12.5px; color: var(--sub); }
-  .device .foot .sign { font-family: var(--head); color: var(--text); font-size: 15px; border-bottom: 1px solid var(--text); padding: 0 10px; }
-
-  /* ---------- 各セクション ---------- */
-  section { padding: 88px 0; }
-  section.tint { background: var(--tint); }
-  h2 { font-family: var(--head); font-weight: var(--head-w); font-size: clamp(24px, 2.6vw, 32px); line-height: 1.55; margin: 0 0 14px; letter-spacing: .02em; }
-  .sec-lead { color: var(--sub); max-width: 38em; margin: 0 0 40px; }
-
-  .issues { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 2px solid var(--primary); }
-  [data-theme="cafe"] .issues { border-top: 2px dotted var(--primary); }
-  .issues div { padding: 26px 26px 6px 0; }
-  .issues div + div { padding-left: 26px; border-left: 1px solid var(--line); }
-  .issues h3 { font-size: 17.5px; margin: 0 0 8px; line-height: 1.6; }
-  .issues p { margin: 0; color: var(--sub); font-size: 15px; }
-  [data-theme="kids"] .issues { border-top: 0; gap: 16px; }
-  [data-theme="kids"] .issues div { background: var(--tint); border-radius: var(--r-card); padding: 22px; border: 0; }
-
-  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 56px; }
-  .feature { display: grid; grid-template-columns: 48px 1fr; gap: 16px; }
-  .feature svg { width: 48px; height: 48px; color: var(--primary); }
-  [data-theme="kids"] .feature svg { background: var(--ok-bg); color: var(--ok); border-radius: 14px; padding: 8px; }
-  .feature h3 { font-size: 18px; margin: 4px 0 6px; line-height: 1.55; }
-  .feature p { margin: 0; color: var(--sub); font-size: 15px; }
-
-  .steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .steps li { counter-increment: s; background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--primary); padding: 18px 18px 20px; border-radius: 0; }
-  .steps li::before { content: var(--step-label, "手順 ") counter(s); font-size: 13px; font-weight: 700; color: var(--primary-2); }
-  [data-theme="cafe"] .steps li { border: 1px solid var(--line); border-radius: var(--r-card); }
-  [data-theme="kids"] .steps li { border: 2px solid var(--line); border-radius: var(--r-card); }
-  [data-theme="kids"] .steps li:nth-child(even) { border-top-color: var(--ok); }
-  [data-theme="kids"] .steps li:nth-child(odd) { border-top: 6px solid var(--primary); }
-  [data-theme="kids"] .steps li:nth-child(even) { border-top: 6px solid var(--ok); }
-  .steps h3 { font-size: 17px; margin: 6px 0 6px; }
-  .steps p { margin: 0; font-size: 14.5px; color: var(--sub); }
-  .steps .term { display: block; margin-top: 10px; font-size: 13px; color: var(--text); }
-
-  .info { display: grid; grid-template-columns: .9fr 1.1fr; gap: 56px; align-items: start; }
-  .info table { width: 100%; border-collapse: collapse; font-size: 15px; }
-  .info th, .info td { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  .info th { width: 34%; font-weight: 700; background: var(--tint); }
-  section.tint .info th { background: var(--bg); }
-
-  .faq details { border-bottom: 1px solid var(--line); }
-  .faq details:first-of-type { border-top: 1px solid var(--line); }
-  .faq summary { cursor: pointer; list-style: none; padding: 18px 40px 18px 0; font-weight: 700; position: relative; }
-  .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::after { content: "+"; position: absolute; right: 8px; top: 14px; font-size: 22px; font-weight: 400; color: var(--primary); }
-  .faq details[open] summary::after { content: "−"; }
-  .faq details p { margin: 0 0 18px; color: var(--sub); max-width: 46em; }
-
-  .contact { background: var(--dark); color: #fff; }
-  .contact .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
-  .contact h2 { color: #fff; }
-  .contact p { color: var(--dark-text); }
-  form { background: #fff; color: #1e2a35; border-radius: calc(var(--r-card) / 2); padding: 28px; }
-  .field { margin-bottom: 16px; }
-  .field label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-  .field label .req { color: #b42318; font-size: 12px; margin-left: 6px; }
-  .field input, .field select { width: 100%; font: inherit; font-size: 15px; padding: 10px 12px; border: 1px solid #b9c3ce; border-radius: 6px; background: #fff; }
-  .field input:focus, .field select:focus { border-color: var(--primary-2); outline: 2px solid rgba(45,86,137,.25); }
-  .field .err { color: #b42318; font-size: 13px; margin-top: 4px; display: none; }
-  .field.invalid input { border-color: #b42318; }
-  .field.invalid .err { display: block; }
-  .agree { font-size: 13.5px; color: #5b6875; margin: 6px 0 18px; }
-  .done { display: none; border-left: 4px solid var(--ok); background: var(--ok-bg); padding: 14px 16px; margin-top: 16px; font-size: 14.5px; }
-  .done.show { display: block; }
-  form .btn.primary { color: var(--on-primary); }
-
-  /* 歯科 */
-  [data-theme="dental"] .device { box-shadow: 0 20px 44px -26px rgba(36,112,122,.55); }
-  [data-theme="dental"] .issues { border-top: 0; gap: 16px; }
-  [data-theme="dental"] .issues div { border: 1px solid var(--line); border-radius: var(--r-card); padding: 22px; }
-  [data-theme="dental"] .steps li { border-radius: var(--r-card); border-top-width: 1px; border-left: 4px solid var(--primary); }
-  /* 工務店 */
-  [data-theme="builder"] .hero h1 { font-size: clamp(34px, 4.8vw, 60px); line-height: 1.3; letter-spacing: 0; }
-  [data-theme="builder"] .device { border: 2px solid var(--text); box-shadow: 12px 12px 0 #d9c49a; }
-  [data-theme="builder"] .issues { border-top: 6px solid var(--text); }
-  [data-theme="builder"] h2 { font-size: clamp(26px, 3vw, 38px); }
-  [data-theme="builder"] .steps li { border: 2px solid var(--text); border-top-width: 2px; }
-  [data-theme="builder"] .steps li::before { color: var(--ok); font-size: 15px; }
-  [data-theme="builder"] .feature svg { color: var(--ok); }
-  /* 旅館 */
-  [data-theme="ryokan"] h2, [data-theme="ryokan"] .hero h1 { letter-spacing: .12em; }
-  [data-theme="ryokan"] .device { box-shadow: none; border: 1px solid var(--text); background: #fbfaf7; }
-  [data-theme="ryokan"] .issues { border-top: 1px solid var(--text); }
-  [data-theme="ryokan"] .steps li { background: transparent; border: 0; border-top: 1px solid var(--text); padding-left: 0; }
-  [data-theme="ryokan"] .feature svg { color: var(--ok); }
-  @media (min-width: 901px) {
-    [data-theme="ryokan"] .hero .wrap > div:first-child { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 44px; align-items: start; }
-    [data-theme="ryokan"] .hero h1 { writing-mode: vertical-rl; grid-row: 1 / span 3; font-size: clamp(34px, 3.4vw, 44px); line-height: 1.7; margin: 0; height: 9.5em; }
-    [data-theme="ryokan"] .hero h1 span { display: block; }
-    [data-theme="ryokan"] .hero p.lead { margin-top: 8px; }
-  }
-
-  footer { background: var(--foot); color: var(--foot-text); font-size: 13.5px; padding: 32px 0; }
-  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-  footer a { color: var(--foot-text); }
-
-  @media (max-width: 900px) {
-    nav.g a:not(.btn) { display: none; }
-    .hero .wrap, .info, .contact .wrap { grid-template-columns: 1fr; }
-    .visual { justify-self: start; }
-    .visual .photo { aspect-ratio: 16 / 9; }
-    .issues { grid-template-columns: 1fr; }
-    .issues div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
-    [data-theme="kids"] .issues div + div { padding-left: 22px; border-top: 0; }
-    .features { grid-template-columns: 1fr; }
-    .steps { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 560px) {
-    .wrap { padding: 0 20px; }
-    .steps { grid-template-columns: 1fr; }
-    .hero .facts { flex-direction: column; gap: 4px; }
-    .visual .photo { width: 100%; }
-    .visual .device { width: 94%; margin-top: -48px; }
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Klee+One:wght@600&family=M+PLUS+Rounded+1c:wght@400;500;800&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Zen+Old+Mincho:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="landing.css">
 </head>
 <body>
 <div class="switcher" role="region" aria-label="制作サンプルの表示切り替え">
   <div class="wrap">
-    <span>制作サンプル：会社名・店名・内容はすべて架空です</span>
-    <div class="pick" id="pick"><span id="pick-label">デザインを切り替える</span></div>
+    <span>制作サンプル（架空）</span>
+    <div class="pick" id="pick"><span id="pick-label">業種</span></div>
     <a href="../../index.html">ポートフォリオに戻る</a>
   </div>
 </div>
@@ -277,7 +29,7 @@
 <main id="top">
   <div class="hero">
     <div class="wrap">
-      <div>
+      <div class="hero-copy">
         <h1 id="h1"></h1>
         <p class="lead" id="lead"></p>
         <div class="ctas" id="ctas"></div>
@@ -285,12 +37,12 @@
       </div>
       <div class="visual">
         <img class="photo" id="photo" src="img/b2b.webp" alt="" width="1200" height="800" decoding="async">
-        <div class="device" id="device" role="img"></div>
+        <section class="device" id="device" aria-labelledby="device-title"></section>
       </div>
     </div>
   </div>
 
-  <section aria-labelledby="issues-h">
+  <section id="concerns" aria-labelledby="issues-h">
     <div class="wrap">
       <h2 id="issues-h"></h2>
       <p class="sec-lead" id="issues-lead"></p>
@@ -321,6 +73,7 @@
         <p class="sec-lead" id="info-lead" style="margin-bottom:0"></p>
       </div>
       <table id="info-table"></table>
+      <div id="aside-info" class="aside-info" hidden></div>
     </div>
   </section>
 
@@ -388,7 +141,6 @@
       ctas: [["#contact", "資料を請求する", "primary"], ["#flow", "導入の流れを見る", "ghost"]],
       facts: ["今の点検表をそのまま移行", "オフラインでも記録できる", "監査用の帳票を出力"],
       device: {
-        aria: "タブレットでの点検記録画面のイメージ。6項目中5項目が正常、1項目が要確認",
         title: "第2ポンプ室 日常点検", meta: "11月27日 9:12",
         rows: [["吐出圧力", "0.42 MPa（基準 0.35〜0.50）", "正常", "ok"], ["モーター温度", "48 ℃（基準 60 ℃以下）", "正常", "ok"], ["振動・異音", "なし", "正常", "ok"], ["配管からの漏れ", "フランジ部ににじみ。写真 2枚", "要確認", "warn"], ["潤滑油の量", "規定範囲内", "正常", "ok"], ["非常停止ボタン", "動作確認済み", "正常", "ok"]],
         foot: ["点検者", "山田", "保全課へ通知済み"],
@@ -397,7 +149,7 @@
         items: [["転記と集計に時間がかかる", "現場で書いた点検表を事務所で入力し直し、月末に集計する作業が、担当者の負担になっています。"], ["異常の共有が遅れる", "「要確認」の記録が、点検表が回収されるまで保全担当に届かず、対応が後手に回ります。"], ["監査のたびに書類を探す", "過去の点検記録を紙のファイルから探し出し、監査や立入検査に合わせて揃えるのに時間がかかります。"]] },
       features: { h: "点検ノートでできること", lead: "現場の手順はそのままに、記録・共有・保管をひとつにまとめます。",
         items: [["sheet", "今の点検表を、そのまま画面に", "項目・基準値・順番は、現在お使いの点検表に合わせて設定します。現場の方が新しい手順を覚える必要はありません。"], ["bell", "基準を外れたら、すぐに知らせる", "入力した値が基準を外れたときや「要確認」が付いたとき、保全担当にメールで通知します。写真も一緒に届きます。"], ["chart", "推移をグラフで確認", "温度や圧力などの測定値を、設備ごとに時系列で表示します。少しずつ変化している設備に早めに気づけます。"], ["doc", "監査用の帳票を、期間を選んで出力", "期間と設備を選ぶだけで、点検記録をPDFとCSVで出力できます。記録は修正履歴とあわせて保管されます。"]] },
-      flow: { h: "導入の流れ", lead: "お申し込みから運用開始まで、担当者が伴走します。", stepLabel: "手順 ",
+      flow: { h: "導入の流れ", lead: "お申し込みから運用開始まで、担当者が伴走します。",
         items: [["お打ち合わせ", "現在の点検表と運用をお伺いし、移行の範囲を決めます。", "目安 1週間"], ["点検表の設定", "点検項目と基準値を、こちらで画面に設定します。", "目安 2週間"], ["試験運用", "一部の設備で紙と並行して運用し、使い勝手を調整します。", "目安 2〜4週間"], ["本運用", "全設備に広げます。操作説明会と運用マニュアルをご用意します。", "以降は月次で運用相談"]] },
       info: { h: "セキュリティと運用体制", lead: "情報システム部門の審査でよくご質問いただく項目をまとめました。詳しい資料は、資料請求後にお送りします。",
         rows: [["データの保管", "国内のデータセンターで保管し、毎日バックアップを取得します。"], ["通信", "すべての通信を暗号化しています。"], ["アクセス管理", "利用者ごとに閲覧・入力・承認の権限を設定できます。IPアドレスによる接続制限にも対応します。"], ["操作の記録", "記録の作成・修正・出力の操作をすべて履歴として残し、管理画面で確認できます。"], ["サポート", "平日 9:00〜18:00 に、メールと電話でお問い合わせを受け付けます。"]] },
@@ -421,7 +173,6 @@
       ctas: [["#info", "営業時間と場所を見る", "primary"], ["#flow", "貸切のご予約について", "ghost"]],
       facts: ["豆は毎週店内で焙煎", "焼き菓子は毎朝手作り", "ペット連れはテラス席で"],
       device: {
-        aria: "本日のおすすめを書いた黒板メニューのイメージ",
         title: "本日のおすすめ", meta: "11月27日",
         rows: [["季節のブレンド", "浅煎り。柑橘のような香り", "おすすめ", "ok"], ["自家製かためプリン", "卵と牛乳だけで蒸し焼きに", "数量限定", "warn"], ["焼き菓子の盛り合わせ", "スコーン・フィナンシェ・クッキー", "人気", "plain"], ["ほうじ茶ラテ", "珈琲が苦手な方にも", "温・冷", "plain"]],
         foot: ["店主より", "ひだまり", "豆の量り売りもあります"],
@@ -430,7 +181,7 @@
         items: [["朝の散歩のついでに", "7時半から開けています。テイクアウトの一杯と焼きたてのスコーンで、一日を始めてみてください。"], ["ひとりで本を読みたい午後に", "窓際のカウンター席は、ひとりで長く過ごす方のための席です。おかわりの珈琲は少しお安くしています。"], ["家族や友人との小さな集まりに", "6名様まで座れる大きなテーブルがあります。誕生日や送別会の貸切もお受けしています。"]] },
       features: { h: "ひだまり珈琲のこだわり", lead: "特別なことはしていません。毎日同じことを、丁寧に続けています。",
         items: [["cup", "毎週、少しずつ焙煎", "焙煎したての豆を使うため、1週間で使い切る量だけを焼いています。季節ごとに産地の違う豆を選んでいます。"], ["leaf", "焼き菓子は毎朝店内で", "国産の小麦と発酵バターで、毎朝その日の分を焼いています。売り切れの際はご容赦ください。"], ["chair", "長居をしていただける席", "12席のうち半分は、ひとりで過ごせるカウンター席です。電源のある席もご用意しています。"], ["clock", "朝7時半からの営業", "通勤や散歩の前に立ち寄れるよう、朝早くから開けています。テイクアウトは開店直後から承ります。"]] },
-      flow: { h: "貸切のご予約の流れ", lead: "誕生日会や小さなパーティーに、お店をまるごとお使いいただけます。", stepLabel: "その",
+      flow: { h: "貸切のご予約の流れ", lead: "誕生日会や小さなパーティーに、お店をまるごとお使いいただけます。",
         items: [["ご相談", "ご希望の日時と人数を、下のフォームからお知らせください。", "2週間前までに"], ["内容のご確認", "お料理やケーキのご希望を、メールでお伺いします。", "数日以内にご連絡"], ["ご予約の確定", "内容が決まりましたら、ご予約を確定します。", "前日まで変更できます"], ["当日", "お店を貸切にして、皆さまをお待ちしています。", "最大12名様まで"]] },
       info: { h: "店舗情報", lead: "駅から歩いて8分、公園の向かいにあります。お車の方は近くのコインパーキングをご利用ください。",
         rows: [["営業時間", "7:30〜18:00（ラストオーダー 17:30）"], ["定休日", "水曜日・第3木曜日"], ["席数", "12席（カウンター6席・テーブル6席）、テラス2席"], ["所在地", "架空のお店のため、住所はありません"], ["その他", "全席禁煙。テラス席はペットとご一緒にどうぞ。"]] },
@@ -454,7 +205,6 @@
       ctas: [["#contact", "無料体験に申し込む", "primary"], ["#info", "教室の概要を見る", "ghost"]],
       facts: ["小学1年生から", "1クラス6人までの少人数", "はじめてでも大丈夫"],
       device: {
-        aria: "今週のクラスの時間割と空き状況のイメージ",
         title: "今週のクラス", meta: "11月24日〜30日",
         rows: [["月 16:30 はじめてクラス", "1・2年生 ／ タブレットで絵を動かす", "空きあり", "ok"], ["水 17:00 ゲームづくり", "3・4年生 ／ 迷路ゲームを作る", "残り2席", "warn"], ["土 10:00 ロボット", "4〜6年生 ／ センサーで動かす", "満席", "plain"], ["土 13:30 はじめてクラス", "1・2年生 ／ 無料体験あり", "空きあり", "ok"]],
         foot: ["担当", "こばやし", "保護者の見学もできます"],
@@ -463,7 +213,7 @@
         items: [["家ではゲームばかりしている", "遊ぶだけでなく、作る側に回ってみると、同じ画面に向かう時間の意味が変わってきます。"], ["プログラミングは難しそう", "最初はブロックを並べるだけで動かせる教材から始めます。キーボードが苦手でも大丈夫です。"], ["続けられるか心配", "毎回ひとつ作品が完成するので、「できた」を持ち帰れます。発表会で家族に見せる機会もあります。"]] },
       features: { h: "ことことの特長", lead: "楽しく続けられることを、いちばん大切にしています。",
         items: [["puzzle", "毎回ひとつ、作品が完成", "1回のレッスンで、ゲームやアニメーションを1つ完成させます。作ったものは家でも続きを作れます。"], ["people", "6人までの少人数クラス", "講師がひとりひとりの手元を見ながら進めます。わからないところは、その場で一緒に考えます。"], ["star", "学年に合わせた3つのコース", "はじめてクラス・ゲームづくり・ロボットの3コース。できることが増えたら、次のコースに進めます。"], ["chat", "毎回の様子を保護者にお知らせ", "レッスンのあと、その日に作ったものと、がんばっていたところをお知らせします。"]] },
-      flow: { h: "入会までの流れ", lead: "まずは無料体験で、お子さまが楽しめるかどうかを見てみてください。", stepLabel: "ステップ",
+      flow: { h: "入会までの流れ", lead: "まずは無料体験で、お子さまが楽しめるかどうかを見てみてください。",
         items: [["無料体験のお申し込み", "下のフォームから、ご希望のクラスをお知らせください。", "かんたん1分"], ["無料体験レッスン", "実際のレッスンに参加して、作品をひとつ作ります。", "60分・保護者見学OK"], ["ご相談", "体験の様子をお伝えし、合いそうなコースをご案内します。", "その場でも後日でも"], ["入会・レッスン開始", "ご希望のクラスから、毎週通っていただけます。", "月の途中からでもOK"]] },
       info: { h: "教室の概要", lead: "教材とタブレットは教室でご用意します。手ぶらでお越しください。",
         rows: [["対象", "小学1年生〜6年生"], ["レッスン", "週1回・60分（コースにより90分）"], ["定員", "1クラス6人まで"], ["場所", "架空の教室のため、所在地はありません"], ["持ち物", "なし（教材・タブレットは教室で用意します）"]] },
@@ -487,7 +237,6 @@
       ctas: [["#contact", "Webで予約する", "primary"], ["#flow", "初診の流れを見る", "ghost"]],
       facts: ["完全予約制", "平日は19時まで", "お子さまの診療も"],
       device: {
-        aria: "本日の予約の空き状況のイメージ",
         title: "本日の予約枠", meta: "11月27日（木）",
         rows: [["9:30〜", "定期検診・クリーニング", "空きあり", "ok"], ["11:00〜", "むし歯・痛みのご相談", "残り1枠", "warn"], ["15:00〜", "お子さまの診療", "空きあり", "ok"], ["18:00〜", "お仕事帰りの方に", "予約済み", "plain"]],
         foot: ["受付", "さくら通り歯科", "Web予約は24時間"],
@@ -496,7 +245,7 @@
         items: [["待ち時間が長そう", "予約の時間に合わせて診療を始めます。受付から診療台までの時間を短くするよう心がけています。"], ["何をされるか分からなくて不安", "治療を始める前に、写真を見ながら内容と期間をご説明します。その日は相談だけでも大丈夫です。"], ["仕事帰りには間に合わない", "平日は19時まで診療しています。土曜日の午前も診療しています。"]] },
       features: { h: "当院の特長", lead: "はじめての方にも、通い続けやすい医院を目指しています。",
         items: [["calendar", "Webで24時間予約", "空いている時間をその場で確認して、予約や変更ができます。前日にはお知らせのメールが届きます。"], ["chat", "写真を見ながらのご説明", "口の中の写真を画面に映し、今の状態と治療の選択肢をご説明します。ご納得いただいてから始めます。"], ["shield", "予防のための定期検診", "むし歯や歯周病を早めに見つけられるよう、数か月ごとの定期検診をご案内しています。"], ["people", "お子さまの診療", "はじめは診療台に座る練習から。無理に進めず、お子さまのペースに合わせます。"]] },
-      flow: { h: "初診の流れ", lead: "はじめての方は、少し早めにお越しください。", stepLabel: "",
+      flow: { h: "初診の流れ", lead: "はじめての方は、少し早めにお越しください。",
         items: [["ご予約", "Web予約またはお電話で、ご都合のよい日時をお選びください。", "Web予約は24時間"], ["問診", "気になっていることや、これまでの治療についてお伺いします。", "受付で約10分"], ["検査とご説明", "写真とレントゲンで状態を確認し、治療の選択肢をご説明します。", "約30分"], ["治療の開始", "ご納得いただけた内容から、治療を始めます。", "次回以降の予約もこの日に"]] },
       info: { h: "医院案内", lead: "駅から歩いて3分、通り沿いの建物の2階です。エレベーターがあります。",
         rows: [["診療時間", "平日 9:30〜13:00 ／ 14:30〜19:00、土曜 9:30〜13:00"], ["休診日", "日曜・祝日・木曜午後"], ["診療内容", "一般歯科、小児歯科、予防歯科、歯周病の治療"], ["所在地", "架空の医院のため、住所はありません"], ["その他", "ベビーカーのまま入れます。キッズスペースがあります。"]] },
@@ -515,12 +264,11 @@
       logo: { name: "まるた工務店", company: "木の家の設計と施工（架空）", mark: '<rect x="1" y="1" width="32" height="32" fill="#2d2a26"/><path d="M7 17l10-8 10 8M10 15v11h14V15" fill="none" stroke="#d9c49a" stroke-width="2.6" stroke-linejoin="round"/>' },
       nav: [["#features", "家づくりの考え方"], ["#flow", "家づくりの流れ"], ["#info", "会社概要"], ["#faq", "よくある質問"]],
       navCta: "見学会の予約",
-      h1: ["長く住むほど、", "なじんでいく", "家を。"],
+      h1: ["長く住むほど、", "なじんでいく家を。"],
       lead: "まるた工務店は、地元の木を使った木造住宅をつくる工務店です。設計から工事、住んでからの手入れまで、同じ担当者が責任を持って見続けます。",
       ctas: [["#contact", "見学会を予約する", "primary"], ["#flow", "家づくりの流れを見る", "ghost"]],
       facts: ["設計から施工まで自社で", "地元の木を使った木造", "引き渡し後も定期点検"],
       device: {
-        aria: "完成見学会の予約状況のイメージ",
         title: "完成見学会のご案内", meta: "12月の予定",
         rows: [["12/6（土）平屋・3LDK", "庭とつながる広い縁側", "受付中", "ok"], ["12/7（日）平屋・3LDK", "同じ住まいの2日目", "残り2組", "warn"], ["12/13（土）2階建て・4LDK", "共働き家族の家事動線", "受付中", "ok"], ["12/20（土）リフォーム", "築30年の住まいの改修", "準備中", "plain"]],
         foot: ["担当", "まるた", "1組ずつのご案内です"],
@@ -529,7 +277,7 @@
         items: [["何から始めればいいか分からない", "土地探しの前でも、まずはご相談ください。暮らし方のお話から、必要な広さを一緒に考えます。"], ["住んでからのことが心配", "引き渡し後も、決まった時期に点検に伺います。困ったときは、つくった担当者にすぐ連絡できます。"], ["打ち合わせがうまく伝わるか", "図面だけでなく、模型と実際に建てた家の見学で、広さや明るさを確かめながら進めます。"]] },
       features: { h: "家づくりの考え方", lead: "派手なことはしません。基本を丁寧に積み重ねます。",
         items: [["home", "暮らし方から考える設計", "家事の動き、家族の過ごし方、将来の変化をお伺いして、間取りを一緒に考えます。"], ["leaf", "地元の木を使う", "近くの山で育った木を使い、乾燥や加工を確かめたうえで柱や梁にしています。"], ["tool", "自社の職人による施工", "設計と工事の担当が同じ会社にいるので、現場での判断が早く、図面の意図がそのまま形になります。"], ["sheet", "見積もりは項目ごとに", "どの工事にどれだけかかるのかを、項目ごとに分けてお見せします。"]] },
-      flow: { h: "家づくりの流れ", lead: "ご相談からお引き渡しまで、およそ1年が目安です。", stepLabel: "",
+      flow: { h: "家づくりの流れ", lead: "ご相談からお引き渡しまで、およそ1年が目安です。",
         items: [["ご相談・見学", "見学会やご相談で、暮らし方とご希望をお伺いします。", "何度でも"], ["プランとお見積もり", "間取りと仕様を決め、項目ごとのお見積もりをお出しします。", "2〜3か月"], ["工事", "着工から完成まで、現場の様子を定期的にお知らせします。", "4〜6か月"], ["お引き渡し・点検", "住み始めてからも、決まった時期に点検に伺います。", "定期点検は10年間"]] },
       info: { h: "会社概要", lead: "地域で家づくりを続けてきた、小さな工務店です。",
         rows: [["会社名", "まるた工務店（架空の会社です）"], ["事業内容", "木造住宅の設計・施工、リフォーム"], ["施工エリア", "事務所から車で1時間以内"], ["所在地", "架空の会社のため、住所はありません"], ["見学会", "毎月2〜3回開催（1組ずつのご案内）"]] },
@@ -553,7 +301,6 @@
       ctas: [["#contact", "空室を問い合わせる", "primary"], ["#info", "宿のご案内を見る", "ghost"]],
       facts: ["客室は八室のみ", "源泉かけ流し", "駅から送迎あり"],
       device: {
-        aria: "今月の空室状況のイメージ",
         title: "空室状況", meta: "十二月",
         rows: [["12/5（金）川沿いの和室", "二名様より", "残り一室", "warn"], ["12/6（土）露天風呂付き客室", "二名様より", "満室", "plain"], ["12/11（木）川沿いの和室", "一名様でも", "空室あり", "ok"], ["12/12（金）離れ", "四名様まで", "空室あり", "ok"]],
         foot: ["女将", "しずく", "お電話でも承ります"],
@@ -562,7 +309,7 @@
         items: [["ふたりで静かに過ごしたい", "館内に大きな音の出る設備はありません。夜は川の音だけが聞こえます。"], ["ひとり旅でゆっくりしたい", "平日はおひとり様でもお泊まりいただけます。本を持っていらっしゃる方が多い宿です。"], ["家族の節目を祝いたい", "離れの客室は四名様まで。記念日には、ささやかなお祝いをご用意します。"]] },
       features: { h: "宿のこだわり", lead: "八室だからこそ、ひとつひとつに手をかけられます。",
         items: [["steam", "源泉かけ流しの湯", "加水も加温もしない湯を、大浴場と露天風呂に引いています。夜通し入っていただけます。"], ["bowl", "その日の山と川の夕餉", "近くの畑と川でとれたものを中心に、品数を絞って、温かいものは温かいうちにお出しします。"], ["bed", "八室だけの静かな客室", "すべての客室から川が見えます。テレビは置かず、代わりに本を数冊ご用意しています。"], ["car", "駅からの送迎", "最寄りの駅まで、お迎えにあがります。ご到着の時刻をお知らせください。"]] },
-      flow: { h: "ご予約から当日まで", lead: "ご不明な点は、いつでもお気軽にお尋ねください。", stepLabel: "",
+      flow: { h: "ご予約から当日まで", lead: "ご不明な点は、いつでもお気軽にお尋ねください。",
         items: [["お問い合わせ", "ご希望の日にちと人数を、下のフォームまたはお電話でお知らせください。", "空室を確認してご連絡"], ["ご予約の確定", "お部屋とお食事の内容を決めて、ご予約を確定します。", "アレルギーもこの時に"], ["前日のご連絡", "到着のお時間と、送迎の有無を確認させていただきます。", "前日の夕方"], ["ご到着", "駅または宿でお迎えします。お茶とお菓子でひと休みを。", "チェックイン 15時から"]] },
       info: { h: "宿のご案内", lead: "山あいの小さな宿です。お越しの際は、時間に余裕を持っておいでください。",
         rows: [["チェックイン／アウト", "15:00〜18:00 ／ 〜11:00"], ["客室", "和室5室、露天風呂付き客室2室、離れ1棟"], ["温泉", "大浴場・露天風呂（夜通し入浴いただけます）"], ["所在地", "架空の宿のため、住所はありません"], ["送迎", "最寄り駅から無料送迎（要予約）"]] },
@@ -579,10 +326,18 @@
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
+  const sectionOrder = {
+    b2b: ["concerns", "features", "flow", "info", "faq"],
+    cafe: ["info", "features", "concerns", "flow", "faq"],
+    kids: ["features", "info", "flow", "concerns", "faq"],
+    dental: ["info", "flow", "features", "concerns", "faq"],
+    builder: ["features", "info", "concerns", "flow", "faq"],
+    ryokan: ["features", "concerns", "info", "faq", "flow"],
+  };
+
   function render(key) {
     const P = PATTERNS[key];
     document.documentElement.dataset.theme = key;
-    document.documentElement.style.setProperty("--step-label", '"' + P.flow.stepLabel + '"');
     document.title = P.title;
 
     $("logo").setAttribute("aria-label", P.logo.name + " トップ");
@@ -597,8 +352,14 @@
     $("photo").src = "img/" + key + ".webp";
 
     const D = P.device;
-    $("device").setAttribute("aria-label", D.aria);
-    $("device").innerHTML = '<div class="top"><b>' + esc(D.title) + "</b><span>" + esc(D.meta) + '</span></div><ul class="checks">' +
+    const device = $("device");
+    const inHero = key === "b2b";
+    const asideInfo = $("aside-info");
+    (inHero ? document.querySelector(".visual") : asideInfo).append(device);
+    asideInfo.hidden = inHero;
+    const main = $("top");
+    sectionOrder[key].forEach((id) => main.insertBefore($(id), $("contact")));
+    device.innerHTML = '<header class="device-head"><h2 id="device-title">' + esc(D.title) + '</h2><span>' + esc(D.meta) + '</span></header><ul class="checks">' +
       D.rows.map(([a, b, tag, k]) => "<li><span>" + esc(a) + "<small>" + esc(b) + '</small></span><span class="tag ' + k + '">' + esc(tag) + "</span></li>").join("") +
       '</ul><div class="foot"><span>' + esc(D.foot[0]) + '</span><span class="sign">' + esc(D.foot[1]) + "</span><span>" + esc(D.foot[2]) + "</span></div>";
 
@@ -619,8 +380,8 @@
     const C = P.contact;
     $("contact-text").innerHTML = '<h2 id="contact-h">' + esc(C.h) + "</h2>" + C.text.map((t) => "<p>" + esc(t) + "</p>").join("");
     $("form").innerHTML =
-      C.fields.map(([id, label, ac, err]) => '<div class="field"><label for="' + id + '">' + esc(label) + '<span class="req">必須</span></label><input id="' + id + '" name="' + id + '" autocomplete="' + ac + '" required><div class="err">' + esc(err) + "</div></div>").join("") +
-      '<div class="field"><label for="email">メールアドレス<span class="req">必須</span></label><input id="email" name="email" type="email" autocomplete="email" required><div class="err">' + esc(C.emailErr) + "</div></div>" +
+      C.fields.map(([id, label, ac, err]) => '<div class="field"><label for="' + id + '">' + esc(label) + '<span class="req">必須</span></label><input id="' + id + '" name="' + id + '" autocomplete="' + ac + '" aria-describedby="' + id + '-error" required><div class="err" id="' + id + '-error">' + esc(err) + "</div></div>").join("") +
+      '<div class="field"><label for="email">メールアドレス<span class="req">必須</span></label><input id="email" name="email" type="email" autocomplete="email" aria-describedby="email-error" required><div class="err" id="email-error">' + esc(C.emailErr) + "</div></div>" +
       '<div class="field"><label for="opt">' + esc(C.select[0]) + '</label><select id="opt" name="opt"><option value="">選択してください</option>' + C.select[1].map((o) => "<option>" + esc(o) + "</option>").join("") + "</select></div>" +
       '<p class="agree">' + esc(C.agree) + '</p><button class="btn primary" type="submit">' + esc(C.submit) + '</button><div class="done" id="done" role="status">入力内容を確認しました。これは制作サンプルのため、実際には送信されません。</div>';
     bindForm(C.fields.map((f) => f[0]));
@@ -629,7 +390,6 @@
     [...$("pick").querySelectorAll("button")].forEach((b) => {
       const on = b.dataset.key === key;
       b.setAttribute("aria-pressed", on ? "true" : "false");
-      if (on && b.offsetParent) b.scrollIntoView({ block: "nearest", inline: "nearest" });
     });
   }
 
@@ -675,7 +435,7 @@
   });
 
   const initial = new URLSearchParams(location.search).get("pattern");
-  render(PATTERNS[initial] ? initial : "b2b");
+  render(Object.hasOwn(PATTERNS, initial) ? initial : "b2b");
 })();
 </script>
 </body>
