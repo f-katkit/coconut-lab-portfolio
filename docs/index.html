@@ -17,13 +17,13 @@
     />
     <style>
       :root {
-        --paper: #f7f9fb;
+        --paper: #f7f6f0;
         --surface: #fff;
-        --ink: #18232f;
-        --muted: #46566a;
-        --line: #d6dfe7;
-        --blue: #174b82;
-        --blue-dark: #12375d;
+        --ink: #222824;
+        --muted: #4b5951;
+        --line: #d2d7cf;
+        --accent: #285340;
+        --accent-dark: #183a2a;
         --display: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
         --body: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", sans-serif;
       }
@@ -61,7 +61,7 @@
       }
 
       a {
-        color: var(--blue);
+        color: var(--accent);
         text-underline-offset: .25em;
       }
 
@@ -120,29 +120,36 @@
       }
 
       .site-nav a:hover {
-        color: var(--blue);
+        color: var(--accent);
         text-decoration: underline;
       }
 
       .hero {
-        padding-block: clamp(2.25rem, 5vw, 3.75rem);
+        padding-block: clamp(2.5rem, 6vw, 5.25rem);
         border-bottom: 1px solid var(--line);
-        background:
-          linear-gradient(90deg, #e6eff8 0%, #e6eff8b3 54%, #e6eff800),
-          linear-gradient(#cddceb 1px, transparent 1px) 0 0 / 2rem 2rem,
-          linear-gradient(90deg, #cddceb 1px, transparent 1px) 0 0 / 2rem 2rem,
-          #e6eff8;
+        background: #e9efe3;
+      }
+
+      .hero .wrap {
+        display: grid;
+        grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr);
+        align-items: end;
+        gap: .6rem clamp(1.5rem, 5vw, 5rem);
+      }
+
+      .hero-copy {
+        padding-bottom: .45rem;
       }
 
       .byline {
-        color: var(--blue);
+        color: var(--accent);
         font-weight: 700;
         font-size: .875rem;
       }
 
       h1 {
-        margin: .65rem 0 1rem;
-        font-size: clamp(2rem, 5.6vw, 4.25rem);
+        margin: .65rem 0 0;
+        font-size: clamp(2rem, 4.2vw, 3.5rem);
         font-weight: 900;
         letter-spacing: -.025em;
       }
@@ -163,9 +170,9 @@
         justify-content: center;
         min-height: 2.75rem;
         padding: .55rem 1.1rem;
-        border: 1px solid var(--blue);
-        border-radius: .45rem;
-        background: var(--blue);
+        border: 1px solid var(--accent);
+        border-radius: .2rem;
+        background: var(--accent);
         color: #fff;
         font-weight: 700;
         text-align: center;
@@ -173,16 +180,16 @@
       }
 
       .button:hover {
-        background: var(--blue-dark);
+        background: var(--accent-dark);
       }
 
       .button.secondary {
         background: var(--surface);
-        color: var(--blue);
+        color: var(--accent);
       }
 
       .button.secondary:hover {
-        background: #eef5fc;
+        background: #edf2e9;
       }
 
       .section {
@@ -215,7 +222,7 @@
       .sample,
       .work {
         border: 1px solid var(--line);
-        border-radius: .7rem;
+        border-radius: .25rem;
         background: var(--surface);
       }
 
@@ -229,7 +236,7 @@
       }
 
       .sample-link:hover {
-        background: #f5f9fe;
+        background: #f0f3ea;
       }
 
       .sample-link:hover .demo-label {
@@ -240,7 +247,7 @@
         display: block;
         width: 100%;
         height: auto;
-        border-radius: .65rem .65rem 0 0;
+        border-radius: .23rem .23rem 0 0;
         border-bottom: 1px solid var(--line);
       }
 
@@ -271,10 +278,26 @@
       .demo-label {
         margin-top: auto;
         padding-top: .2rem;
-        color: var(--blue);
+        color: var(--accent);
         font-size: .875rem;
         font-weight: 700;
         text-decoration: underline;
+      }
+
+      .pattern-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .2rem 1.15rem;
+        margin: .8rem 0 0;
+        padding: .65rem 0 0;
+        border-top: 1px solid var(--line);
+        list-style: none;
+      }
+
+      .pattern-links a {
+        display: inline-block;
+        padding-block: .3rem;
+        font-size: .875rem;
       }
 
       .services {
@@ -319,7 +342,7 @@
       }
 
       .steps li::marker {
-        color: var(--blue);
+        color: var(--accent);
         font-weight: 700;
       }
 
@@ -338,7 +361,7 @@
       .contact-panel {
         padding: clamp(1.25rem, 4vw, 2.5rem);
         border-radius: .75rem;
-        background: var(--blue-dark);
+        background: var(--accent-dark);
         color: #fff;
       }
 
@@ -349,11 +372,11 @@
       .contact-panel .button {
         border-color: #fff;
         background: #fff;
-        color: var(--blue-dark);
+        color: var(--accent-dark);
       }
 
       .contact-panel .button:hover {
-        background: #e6eff8;
+        background: #e9efe3;
       }
 
       .contact-panel .button:focus-visible {
@@ -365,6 +388,13 @@
         border-top: 1px solid var(--line);
         color: var(--muted);
         font-size: .875rem;
+      }
+
+      @media (max-width: 62rem) {
+        .hero .wrap {
+          grid-template-columns: 1fr;
+          gap: 1.1rem;
+        }
       }
 
       @media (max-width: 52rem) {
@@ -379,7 +409,7 @@
         }
 
         .sample img {
-          border-radius: .65rem 0 0 .65rem;
+          border-radius: .23rem 0 0 .23rem;
           border-bottom: 0;
         }
       }
@@ -395,7 +425,7 @@
         }
 
         .sample img {
-          border-radius: .65rem .65rem 0 0;
+          border-radius: .23rem .23rem 0 0;
           border-bottom: 1px solid var(--line);
         }
 
@@ -427,14 +457,18 @@
     <main>
       <section class="hero" aria-labelledby="hero-h">
         <div class="wrap">
-          <p class="byline">個人開発者 Kat</p>
-          <h1 id="hero-h">日々の集計と確認を、<br />自動化します。</h1>
-          <p class="lead">
-            Python・Google Apps Script などを使い、データ収集、表の集計・転記、監視と通知の仕組みを作ります。仕様が決まっている小〜中規模の開発をお受けしています。
-          </p>
-          <div class="actions">
-            <a class="button" href="#contact">開発を相談する</a>
-            <a class="button secondary" href="#samples">サンプルを見る</a>
+          <div>
+            <p class="byline">個人開発者 Kat</p>
+            <h1 id="hero-h">日々の集計と確認を、<br />自動化します。</h1>
+          </div>
+          <div class="hero-copy">
+            <p class="lead">
+              Python・Google Apps Script などを使い、データ収集、表の集計・転記、監視と通知の仕組みを作ります。仕様が決まっている小〜中規模の開発をお受けしています。
+            </p>
+            <div class="actions">
+              <a class="button" href="#contact">開発を相談する</a>
+              <a class="button secondary" href="#samples">サンプルを見る</a>
+            </div>
           </div>
         </div>
       </section>
@@ -455,14 +489,21 @@
               </a>
             </li>
             <li class="sample">
-              <a class="sample-link" href="samples/corporate/index.html" aria-labelledby="corporate-title corporate-demo">
+              <a href="samples/corporate/index.html" aria-label="B2B サービス紹介ページを見る">
                 <img src="assets/corporate.webp" alt="" width="800" height="500" />
-                <div class="sample-copy">
-                  <h3 id="corporate-title">サービス紹介ページ</h3>
-                  <p>法人向けサービスやカフェなど、デザインと問い合わせフォームを6パターンで切り替えられます。</p>
-                  <span class="demo-label" id="corporate-demo">デモを見る</span>
-                </div>
               </a>
+              <div class="sample-copy">
+                <h3>企業・店舗のランディングページ</h3>
+                <p>業種ごとのデザインと、予約・問い合わせフォームを試せます。</p>
+                <ul class="pattern-links" aria-label="ランディングページの作例">
+                  <li><a href="samples/corporate/index.html">法人向け</a></li>
+                  <li><a href="samples/corporate/index.html?pattern=cafe">カフェ</a></li>
+                  <li><a href="samples/corporate/index.html?pattern=kids">子ども向け教室</a></li>
+                  <li><a href="samples/corporate/index.html?pattern=dental">歯科医院</a></li>
+                  <li><a href="samples/corporate/index.html?pattern=builder">工務店</a></li>
+                  <li><a href="samples/corporate/index.html?pattern=ryokan">温泉旅館</a></li>
+                </ul>
+              </div>
             </li>
             <li class="sample">
               <a class="sample-link" href="samples/flow/index.html" aria-labelledby="flow-demo-title flow-demo">
